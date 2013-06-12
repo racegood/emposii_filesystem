@@ -172,7 +172,6 @@ boolean MoveDirectory ( char * msg_ ) {
 	char aDir[32];
 
 	if ( StrLen ( msg_ ) > 1 ) {
-		msg_+=1;
 		// Set directoryStack With Recursive
 		while ( StrLen(msg_) ) 
 		{
@@ -194,7 +193,7 @@ boolean MoveDirectory ( char * msg_ ) {
 			}
 		}			
 	}
-	return true;
+	return false;
 }
 
 boolean cmd_cd (   char * msg_ ) 
@@ -204,7 +203,7 @@ boolean cmd_cd (   char * msg_ )
 	if ( !StrLen(msg_) || msg_[0] == '/' ) 
 	{	// 아무것도 쓰지 않으면 루트로 이동
 		directoryStack_Clear();
-		return MoveDirectory ( msg_ );
+		return MoveDirectory ( msg_+1 );
 	}
 
 	if ( !StrNCmp (msg_, "..", 2) ) 
