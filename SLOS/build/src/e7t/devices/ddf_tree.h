@@ -149,13 +149,14 @@ device_treestr devices[] =
  * block device driver
  */
   {
-  "BLOCK"
+  "BLOCK",
   DEVICE_BLOCK_EMPOSII,
   blkdev_init,
   blkdev_open,
   blkdev_close,
     {blkdev_write_block},
     {blkdev_read_block},
+  0
   },
 /* -- End of tree -- */
 
