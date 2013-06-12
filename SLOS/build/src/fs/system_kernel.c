@@ -158,6 +158,30 @@ struct iNode * SearchNameWithCurrentiNode ( struct iNode * aNode, char *name )
 	return nil;
 }
 
+struct iNode * RemoveiNodeWithName ( struct iNode * aNode, char * name_ )
+{
+	struct iNode * curNode = nil, *tempNode=nil;
+	curNode = (struct iNode *)aNode->child;
+
+	for ( ; curNode; curNode = (struct iNode*)curNode->shibling )
+	{
+		if ( curNode->flag != iNODE_FLAG_NOT_USED
+			&& curNode->flag != iNODE_FLAG_MASTER_BLOCK ) 
+		{
+			if ( !StrCmp ( name_, curNode->File_Struct.name ) )
+			{
+				if ( tempNode ) 
+				{
+					tempNode->shibling = curNode->shibling;
+				}	
+				curNode->shibling = nil;
+				return curNode;
+			}
+		}
+	}
+	return nil;
+}
+
 boolean SearchFileWithName ( char * filePath_, char * fileName_ )
 {
 	struct iNode * currentNode=nil;	

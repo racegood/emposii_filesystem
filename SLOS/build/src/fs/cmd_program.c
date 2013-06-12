@@ -187,7 +187,7 @@ boolean cmd_cd (   char * msg_ )
 				msg_++;
 				
 				curNode = SearchNameWithCurrentiNode ( (struct iNode*)getTopDirectoryStack (), aDir );
-				directoryStack[stackIndex++] = curNode;
+				directoryStack[stackIndex++] = (unsigned int)curNode;
 			}			
 		}
 		return true;
@@ -218,7 +218,21 @@ boolean cmd_cd (   char * msg_ )
 
 boolean cmd_mv	( char * name, char * destPath ) 
 {
-	return true;
+	struct iNode * aNode	= RemoveiNodeWithName ( (struct iNode *)directoryStack[stackIndex], name );
+	struct iNode * destNode	= FindFolderWithPath ( destPath );
+	
+	if ( !aNode ) 
+	{
+		printf ( " [%s] Directory is Not Found \n", name );
+		return false;
+	}
+
+	if ( !destNode ) 
+	{
+		printf ( " [%s] Destination Folder is Not Found \n", destPath );
+	}
+
+	return iNode_AddShibling ( destNode, aNode );
 }
 
 boolean cmd_tree	(   char * msg_ ) 
