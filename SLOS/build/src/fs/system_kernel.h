@@ -54,4 +54,5 @@ boolean LoadDirectoryStructure ( );
 struct iNode * SearchNameWithCurrentiNode ( struct iNode *, char * );
 boolean SearchFileWithName ( char *, char* );
 struct iNode * FindFolderWithPath ( char * );
+struct iNode * ParsePath ( char*, struct iNode * );
 #endif

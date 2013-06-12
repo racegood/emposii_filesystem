@@ -25,7 +25,7 @@ boolean iNode_SetDirectoryWithSuperBlock ( struct iNode * dNode, struct iNode * 
 	dNode->child	= (unsigned int)sbNode;
 
 	// Set Super Block Node 
-	sbNode->head	= (unsigned int)sbNode;
+	sbNode->head	= (unsigned int)dNode;
 	sbNode->flag	= iNODE_FLAG_MASTER_BLOCK;
 
 	return true;

@@ -101,6 +101,9 @@ boolean parse_cmd (   char * msg_ )
 	else if ( !StrCmp(cmd, "mkdir")) {
 		return cmd_mkdir (cmd+Max_Length);
 	}
+	else if ( !StrCmp ( cmd, "mv" )) {
+		return cmd_mv	( cmd+Max_Length, cmd+(Max_Length*2) );
+	}
 	else {
 		if ( debug ) printf( " - Command not Found [%s]\n",cmd );
 		return true;
@@ -166,33 +169,56 @@ boolean cmd_rmdir	(   char * msg_ )
 boolean cmd_cd (   char * msg_ ) 
 {
 	struct iNode * curNode = nil;
+	int index=0;
+	char aDir[32];
+	MemSet ( aDir, '\0', 32 );
 
-	if ( !StrLen(msg_) ) {	// 아무것도 쓰지 않으면 루트로 이동
+	if ( !StrLen(msg_) || msg_[0] == '/' ) {	// 아무것도 쓰지 않으면 루트로 이동
 		directoryStack_Clear();
+		if ( StrLen ( msg_ ) > 1 ) {
+			msg_+=1;
+			// Set directoryStack With Recursive
+			while ( StrLen(msg_) ) 
+			{
+				while ( (*msg_) != '/' )
+					aDir[index++] = (*msg_++);
+				
+				aDir[index] = '\0';
+				msg_++;
+				
+				curNode = SearchNameWithCurrentiNode ( (struct iNode*)getTopDirectoryStack (), aDir );
+				directoryStack[stackIndex++] = curNode;
+			}			
+		}
 		return true;
 	}
 
 	if ( !StrNCmp (msg_, "..", 2) ) {	// .. 의 케이스
 		directoryStack[stackIndex--] = nil;
 		return true;
-	} else {
-		// Find Folder by Name 
-		curNode = (struct iNode *)directoryStack[stackIndex];
-		curNode = (struct iNode *)curNode->child;
-
-		for ( ; curNode; curNode = (struct iNode *)curNode->shibling ) {
-			if ( curNode->flag == iNODE_FLAG_DIRECTORY 
-				&& !StrCmp(curNode->File_Struct.name,msg_ ) ) {
-					// Add Stack
-					directoryStack[++stackIndex] = (unsigned int) curNode;
-					return true;
-			} 
-		}
-
-		// Can't Find Folder 
-		printf(" [%s] Cannot found folder \n", msg_);
-		return true;
 	}
+
+	// Find Folder by Name 
+	curNode = (struct iNode *)directoryStack[stackIndex];
+	curNode = (struct iNode *)curNode->child;
+
+	for ( ; curNode; curNode = (struct iNode *)curNode->shibling ) {
+		if ( curNode->flag == iNODE_FLAG_DIRECTORY 
+			&& !StrCmp(curNode->File_Struct.name,msg_ ) ) {
+			// Add Stack
+			directoryStack[++stackIndex] = (unsigned int) curNode;
+			return true;
+		} 
+	}
+
+	// Can't Find Folder 
+	printf(" [%s] Cannot found folder \n", msg_);
+	return true;
+}
+
+boolean cmd_mv	( char * name, char * destPath ) 
+{
+	return true;
 }
 
 boolean cmd_tree	(   char * msg_ ) 

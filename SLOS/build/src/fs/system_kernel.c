@@ -256,3 +256,31 @@ boolean CreateFile ( Addr P_addr, char * fileName_, int size_, char * path_ )
 		
 	return true;
 }
+
+struct iNode * ParsePath ( char * path_, struct iNode * curDir_ )
+{
+	char curPath[32];
+	int index=0;
+	MemSet ( curPath, '\0', 32 );
+
+	if ( (*path_) == '/' ) return ParsePath ( path_++, (struct iNode *)directoryStack[0] );
+	// Seperate path
+	while ( (*path_) != '\0' ) 
+	{
+		curPath[index++] = (*path_++);
+	}
+	curPath[index] = '\0';	
+	path_++;
+
+	if ( index == 0 ) return curDir_;
+
+	if ( !StrNCmp ( curPath, "..", 2 ) ) {
+		curDir_ = curDir_->head;
+		return ParsePath ( path_, curDir_->head );
+	}
+
+	if ( !StrNCmp ( curPath, ".", 1 ) )
+		return ParsePath ( path_, curDir_ );
+
+	return nil;
+}
