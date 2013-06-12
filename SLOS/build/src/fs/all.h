@@ -29,7 +29,7 @@
 #define nil					0x0
 #define boolean				char
 #define Addr				unsigned int
-#define Max_Size			256
+#define Max_Size			2048
 #define Max_Length			32
 
 /**************************
