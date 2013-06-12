@@ -71,5 +71,6 @@ boolean FileStructure_SetNonDirectoryWithName ( struct FileStructure * fs_, char
  *
  * - End of Note -
  */
+boolean FileStructure_SetFile ( struct FileStructure *, char *, int );
 boolean FileStruct_Initialize ( struct FileStructure * aFile_ ) ;
 #endif

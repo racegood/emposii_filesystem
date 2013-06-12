@@ -2,7 +2,7 @@
 extern int stackIndex;
 extern int directoryStack[];
 
-unsigned int	header=nil;					/* System */
+unsigned int	header=nil;			/* System */
 struct iNode	FileManager[Max_Size];		/* System */ 
 
 boolean FileManager_Initialize ( ) 
@@ -141,6 +141,78 @@ struct iNode * SearchWithName ( char *name )
 	return nil;
 }
 
+struct iNode * SearchNameWithCurrentiNode ( struct iNode * aNode, char *name )
+{
+	struct iNode * curNode = nil;
+	curNode = (struct iNode *)aNode->child;
+
+	for ( ; curNode; curNode = (struct iNode *)curNode->shibling ) 
+	{
+		if ( curNode->flag != iNODE_FLAG_NOT_USED
+			&& curNode->flag != iNODE_FLAG_MASTER_BLOCK ) 
+		{
+			if ( !StrCmp ( name, curNode->File_Struct.name ) )
+				return curNode;
+		}
+	}
+	return nil;
+}
+
+boolean SearchFileWithName ( char * filePath_, char * fileName_ )
+{
+	struct iNode * currentNode=nil;	
+
+	// Devide File Path 
+	// Go File Path
+	currentNode = FindFolderWithPath ( filePath_ );
+
+	// Get A File 
+	currentNode = SearchNameWithCurrentiNode ( currentNode, fileName_ );
+
+	if ( !currentNode ) true;
+	else false;
+}
+
+struct iNode * FindFolderWithPath ( char * filePath_ )
+{
+	char curFolder[32];
+	int  index=0;
+	int  curStackIndex =0;
+	struct iNode * curStack=nil;
+
+	// Initialize To Buffer 
+	MemSet ( curFolder, '\0', 32 );
+
+	if ( !StrLen ( filePath_ ) ) return nil;
+	
+	while ( (*filePath_) != '\0' ) 
+	{
+		// Seperate Path
+		while ( (*filePath_) != '/' ) 
+		{
+			curFolder[index++] = (*filePath_++);
+		}
+		curFolder[index] = '\0';
+		filePath_++;
+		if ( !index ) curStack = &(FileManager[0]);
+		else 
+		{
+			curStack = SearchNameWithCurrentiNode ( curStack, curFolder );	
+			if ( !curStack ) return nil;
+			switch ( curStack->flag ) 
+			{
+				case iNODE_FLAG_DIRECTORY:
+					continue;
+					break;
+				case iNODE_FLAG_NON_DIRECTORY:
+					return curStack;
+					break;
+				default:	;
+			}
+		}
+	}
+}
+
 boolean FindInsideDirectory ( struct iNode * aNode_ ) 
 {
 	struct iNode * sbNode = (struct iNode *)aNode_->child;
@@ -152,3 +224,35 @@ boolean LoadDirectoryStructure ( )
 	return false;
 }
 
+boolean CreateFile ( Addr P_addr, char * fileName_, int size_, char * path_ )
+{
+	struct iNode * aNode=FindFolderWithPath(path_);
+	struct iNode * newNode=nil;
+	
+	// Pointer Check
+	if ( !aNode ) 
+	{
+		printf ( " Not Found This Path -- [%s] \n", path_ );
+		return false;
+	}
+	// Get a New iNode 
+	if ( !(newNode = SearchEmptyFileManager ( )) )
+	{
+		printf ( " FileManager is Full ! \n" );
+		return false;
+	}
+	// Set iNode by File 
+	if ( !iNode_SetFile ( newNode ) ) return false;
+	
+	// Set File Structure 
+	if ( !FileStructure_SetFile ( &(newNode->File_Struct), fileName_, size_ ) )
+		return false;
+
+	// Set Physical Address to iNode 
+	if ( !iNode_SetPhysicalAddress ( newNode, P_addr ) ) return false;
+
+	// Add Shibling
+	if ( !iNode_AddShibling ( aNode, newNode ) ) return false;	
+		
+	return true;
+}

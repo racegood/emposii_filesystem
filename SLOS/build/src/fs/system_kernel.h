@@ -51,4 +51,7 @@ struct iNode * SearchWithName ( char *name ) ;
 unsigned int RemoveDirectory ( char * name ) ;
 boolean FindInsideDirectory ( struct iNode * ) ;
 boolean LoadDirectoryStructure ( );
+struct iNode * SearchNameWithCurrentiNode ( struct iNode *, char * );
+boolean SearchFileWithName ( char *, char* );
+struct iNode * FindFolderWithPath ( char * );
 #endif

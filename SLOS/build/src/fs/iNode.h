@@ -75,7 +75,7 @@ struct iNode * SearchEmptyFileManager ( ) ;
  * - End of Note -
  */
 boolean iNode_SetDirectory ( struct iNode * aNode );
-
+boolean iNode_SetFile	 ( struct iNode * aNode );
 /*
  * --------  Function 
  * -- Name : 

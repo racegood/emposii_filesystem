@@ -18,6 +18,7 @@ bool	HexToInt(char *s, void *retval, int type);
 u32	StrToInt(char *ch);
 int 	StrLen(char *dest);
 void 	StrCpy(char *dest, char *src);
+int	StrChar ( char *s, char aChar );
 
 void	printf(char *fmt, ...);
 void	PrintString(char *fmt, char *s);

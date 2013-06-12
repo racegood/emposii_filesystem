@@ -41,6 +41,15 @@ boolean iNode_SetDirectory ( struct iNode * aNode )
 	return true;
 }
 
+boolean iNode_SetFile	( struct iNode * aNode )
+{
+	if ( !aNode ) return false;
+	// Set File Node 
+	aNode->flag		= iNODE_FLAG_NON_DIRECTORY;
+
+	return true;
+}
+
 boolean iNode_SetSuperBlock ( struct iNode * aNode )
 {
 	return true;

@@ -82,6 +82,14 @@ int StrNCmp(char *s1, char *s2, int len){
 	return 0;
 } // StrNCmp.
 
+int StrChar ( char * s, char aChar ) 
+{
+	for ( ; (*s) != '\0'; s++ ) 
+	{
+		if ( (*s) == aChar ) return 1;
+	}
+	return 0;
+} // StrChar
 
 bool HexToInt(char *s, void *retval, int type){
 	char	c;

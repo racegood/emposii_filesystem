@@ -52,3 +52,11 @@ boolean FileStructure_SetDirectoryWithName( struct FileStructure * fs_, char * n
 
 	return true;
 }
+
+boolean FileStructure_SetFile( struct FileStructure * fs, char * name_, int size_) 
+{
+	StrCpy ( fs->name, name_ );
+	fs->fs_size = size_ ;
+	fs->fs_type = FILE_STRUCTURE_NON_DIRECTORY;
+	return true;
+}
