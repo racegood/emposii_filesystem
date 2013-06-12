@@ -127,27 +127,17 @@ extern int readLED(void);
 void C_EntryTask2(void)
 {
 	volatile int delay;
-	int value;
+	int value=0;
 
 	if (openSEGMENT() == TRUE)
 	{
 		while (1) 
 		{
-			printf("C_EntryTask2\n");
-//			bWAIT;
-
 			value = readLED();
-			printf("value : %d\n", value);
 			writeSEGMENT(value);
+
 			/* dummy time delay...*/
-			for (delay=0; delay<0x10ffff; delay++) {} 
-
-//			bSIGNAL;
-
-	//		writeSEGMENT(0);
-			/* dummy time delay...*/
-		//	for (delay=0; delay<0x10ffff; delay++) {} 
-
+			for (delay=0; delay<0x0aafff; delay++) {} 
 		}
 	}
 

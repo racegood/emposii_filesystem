@@ -32,6 +32,7 @@ ddf_io.o \
 led_driver.o \
 serial_driver.o \
 segment_driver.o \
+blkdev_driver.o \
 mutex.o \
 cinit.o \
 cli_com.o \
@@ -44,7 +45,12 @@ task2_start.o \
 task3_start.o \
 debug.o \
 serial.o \
-lib.o
+lib.o \
+system_kernel.o \
+file_structure.o \
+cmd_program.o \
+file_system.o \
+iNode.o 
 
 ELF_EXEC = slos-elf32
 
@@ -66,6 +72,21 @@ serial.o : ../src/serial/serial.c
 	${CC} ${CFLAGS} -o $@ $<
 
 lib.o : ../src/serial/lib.c
+	${CC} ${CFLAGS} -o $@ $<
+
+file_system.o : ../src/fs/file_system.c
+	${CC} ${CFLAGS} -o $@ $<
+
+system_kernel.o : ../src/fs/system_kernel.c
+	${CC} ${CFLAGS} -o $@ $<
+
+cmd_program.o : ../src/fs/cmd_program.c
+	${CC} ${CFLAGS} -o $@ $<
+
+file_structure.o : ../src/fs/FileStructure.c
+	${CC} ${CFLAGS} -o $@ $<
+
+iNode.o : ../src/fs/iNode.c
 	${CC} ${CFLAGS} -o $@ $<
 
 start.o : ../src/start.s
@@ -137,6 +158,9 @@ serial_driver.o : ../src/e7t/devices/serial_driver.c
 segment_driver.o : ../src/e7t/devices/segment_driver.c
 	${CC} ${CFLAGS} -o $@ $<
  
+blkdev_driver.o : ../src/e7t/devices/blkdev_driver.c
+	${CC} ${CFLAGS} -o $@ $<
+
 mutex.o : ../src/core/mutex.c
 	${CC} ${CFLAGS} -o $@ $<
  

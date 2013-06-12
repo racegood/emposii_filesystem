@@ -72,5 +72,6 @@
 #define DEVICE_LED_E7T 		55075   /* range 55075 - 55079 ....... */ 
 #define DEVICE_SEGMENT_E7T	55090	/* range 55090 - none  ....... */
 #define DEVICE_SERIAL_E7T	55095   /* range 55095 - 55096 ....... */
+#define DEVICE_BLOCK_EMPOSII	55100 
 
 #endif

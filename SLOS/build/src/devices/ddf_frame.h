@@ -84,27 +84,12 @@
 /*****************************************************************************
  * DATATYPES
  *****************************************************************************/
+#define BLOCK_SIZE ((1<<10) - 4) // 4 byte for next ptr
 
-/* -- DATA_STR ----------------------------------------------------------------
- *
- * Description : for block transfer devices
- * Fields      : unsigned int size - size of the block
- *             : void *data - point to the block of data
- *
- */
-
-typedef struct data {
-  unsigned int size;
-  void 	     *data;
+typedef struct block_struct{
+	char data[BLOCK_SIZE];
+	int *next;
 } block_datastr;
-
-/* -- DATA_STR ----------------------------------------------------------------
- *
- * Description : for block transfer devices
- * Fields      : unsigned int size - size of the block
- * 		     : void *data - point to the block of data
- *
- */
 
 typedef struct device_tree {
 
@@ -198,7 +183,7 @@ typedef struct device_tree {
      *
      */
 
-    void		(*block) (UID, block_datastr *);
+    block_datastr *		(*block) (UID, char *);
 
     } write;
 

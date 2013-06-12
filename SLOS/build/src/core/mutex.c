@@ -83,7 +83,7 @@
  * STATICS
  *****************************************************************************/
 
-unsigned volatile int semaphore	= 3; /* this is a start value */
+unsigned volatile int semaphore	= 2; /* this is a start value */
 
 /*****************************************************************************
  * ROUTINES

@@ -93,9 +93,10 @@ void shell(void)
 
 	do 
 	{
-		printf("C_EntryTask3\n");
 		len = readLine("EMPOSII-SLOS: ", command_line, 255);
-		cb = CLI(command_line);
-	} while (!cb);
+	//	cb = CLI(command_line);
+	//	if( (cb = parse_cmd(command_line)) == -1)	break;
+		cb = parse_cmd(command_line);
+	} while (cb);
 }
 

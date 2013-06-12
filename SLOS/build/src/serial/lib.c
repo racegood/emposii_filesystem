@@ -500,3 +500,58 @@ void ClearLine(void){
 		"\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
 	return;
 }
+
+
+char *  StrTok(char *s, const char *ct)
+{
+	char *sbegin, *send;
+	char * __strtok;
+
+	sbegin  = s ? s : __strtok;
+	if (!sbegin) {
+		return NULL;
+	}
+	sbegin += StrSpn(sbegin,ct);
+	if (*sbegin == '\0') {
+		__strtok = NULL;
+		return( NULL );
+	}
+	send = StrpBrk( sbegin, ct);
+	if (send && *send != '\0')
+		*send++ = '\0';
+	__strtok = send;
+
+}
+
+int StrSpn(const char *s, const char *accept)
+{
+	const char *p;
+	const char *a;
+	int count = 0;
+
+	for (p = s; *p != '\0'; ++p) {
+		for (a = accept; *a != '\0'; ++a) {
+			if (*p == *a)
+				break;
+		}
+		if (*a == '\0')
+			return count;
+		++count;
+	}
+
+	return count;
+}
+
+char * StrpBrk(const char * cs,const char * ct)
+{
+	const char *sc1,*sc2;
+
+	for( sc1 = cs; *sc1 != '\0'; ++sc1) {
+		for( sc2 = ct; *sc2 != '\0'; ++sc2) {
+			if (*sc1 == *sc2)
+				return (char *) sc1;
+		}
+	}
+	return NULL;
+}
+

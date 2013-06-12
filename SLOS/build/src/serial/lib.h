@@ -33,5 +33,8 @@ void	ClearLine(void);
 //int	IoTest();
 void	user_wait(unsigned long delay_factor);
 
+char *	StrTok(char *s, const char *ct);
+int	  	StrSpn(const char *s, const char *accept);
+char *	StrpBrk(const char *cs, const char *ct);
 #endif
 

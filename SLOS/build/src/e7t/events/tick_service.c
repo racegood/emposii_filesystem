@@ -135,15 +135,7 @@ void eventTickInit (UINT msec)
 	 * ----------------------------------------------------------------------
 	 */
 
-	switch (msec)
-	{
-		case 2: /* fast ... */
-			countdown = 1843200;
-			break;
-		default: /* slow ... */
-			countdown = 3686400;
-			break;	
-	}
+	countdown = msec * 368640;
 
 	__REG32(TIMER_BASE+OSMR0) = (u32)countdown;
 

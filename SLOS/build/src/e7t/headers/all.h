@@ -73,6 +73,7 @@
 
 #include "../devices/segment_driver.h"
 #include "../devices/serial_driver.h"
+#include "../devices/blkdev_driver.h"
 
 #include "../events/tick_service.h"
 #include "../events/swis.h"

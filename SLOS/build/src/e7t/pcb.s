@@ -59,7 +59,7 @@ PCB_Table:
      .word     PCB_PtrTask3
 
 PCB_TopOfIRQStack:
-     .word     0xA0380000
+     .word     0xA0C09000
 
 PCB_PtrCurrentTask:
      .word     0x1

@@ -62,7 +62,6 @@ NextTask:
 */
 
 handler_contextswitch:
-
      LDMFD   sp!,{r0-r3,r12,r14}    
      LDR     r13,=PCB_PtrCurrentTask
      LDR     r13,[r13]

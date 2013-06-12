@@ -79,6 +79,7 @@
 #include "../headers/api_device.h"
 
 #include "../serial/serial.h"
+#define DELAY_LIMIT 0x100
 
 /*****************************************************************************
  * STATICS
@@ -160,11 +161,7 @@ void C_EntryTask1(void)
 	if (openLED ()==TRUE)
 	{
 		while (1) 
-
 		{
-			printf("C_EntryTask1\n");
-//			aWAIT;
-
 			if(i > 255)
 			{
 				i = 0;
@@ -172,18 +169,12 @@ void C_EntryTask1(void)
 			}
 
 			writeLED(i);
-	//		ret = readLED();
 
 			i = i + j;
 			j = j << 1;
 
 			/* dummy time delay... */
-			for (delay=0; delay<0x20fff; delay++) {} 
-
-//			aSIGNAL;
-
-			/* dummy time delay... */
-//			for (delay=0; delay<0x20ffff; delay++) {} 
+			for (delay=0; delay<0x0aafff; delay++) {} 
 		}
 	}
 

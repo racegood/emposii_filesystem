@@ -73,6 +73,7 @@
 #include "../devices/led_driver.h"
 #include "../devices/segment_driver.h"
 #include "../devices/serial_driver.h"
+#include "../devices/blkdev_driver.h"
 
 /*****************************************************************************
  * DEVICES
@@ -140,6 +141,21 @@ device_treestr devices[] =
     {serial_write_byte},
     {serial_read_byte},
 	0
+  },
+
+/* ------------------------------------------------------------------------
+ * Block device
+ *
+ * block device driver
+ */
+  {
+  "BLOCK"
+  DEVICE_BLOCK_EMPOSII,
+  blkdev_init,
+  blkdev_open,
+  blkdev_close,
+    {blkdev_write_block},
+    {blkdev_read_block},
   },
 /* -- End of tree -- */
 
