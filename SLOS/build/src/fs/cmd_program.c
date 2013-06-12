@@ -199,7 +199,7 @@ boolean cmd_cd (   char * msg_ )
 	}
 
 	// Find Folder by Name 
-	curNode = (struct iNode *)directoryStack[stackIndex];
+	curNode = ParsePath(msg_, (struct iNode *)directoryStack[stackIndex]);
 	curNode = (struct iNode *)curNode->child;
 
 	for ( ; curNode; curNode = (struct iNode *)curNode->shibling ) {
