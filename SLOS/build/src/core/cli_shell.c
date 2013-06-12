@@ -99,6 +99,6 @@ void shell(void)
 	//	cb = CLI(command_line);
 	//	if( (cb = parse_cmd(command_line)) == -1)	break;
 		cb = parse_cmd(command_line);
-	} while (cb==-1);
+	} while (cb!=-1);
 }
 
