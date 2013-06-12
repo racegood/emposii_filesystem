@@ -91,6 +91,8 @@ void shell(void)
 	CallBack cb;
 	int len;
 
+	file_system_start();
+
 	do 
 	{
 		len = readLine("EMPOSII-SLOS: ", command_line, 255);

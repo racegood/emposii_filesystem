@@ -43,8 +43,8 @@ char * directoryPath () ;
  */
 int file_system_start ()
 {
-	char buf[1024];//{0};
-	int count=0;
+	//char buf[1024];//{0};
+	//int count=0;
 
 	// Initialize
 	if ( !Initialize() ) {
@@ -53,7 +53,7 @@ int file_system_start ()
 		return -1;
 	}
 
-
+/*
 	do {
 		count=0;
 		// Input Instruction;
@@ -67,6 +67,7 @@ int file_system_start ()
 	} while ( 1 );
 
 	printf ( " ...Program terminate... \n");
+*/
 	return 0;
 }
 
