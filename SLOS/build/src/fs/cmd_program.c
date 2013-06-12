@@ -167,24 +167,31 @@ boolean cmd_rmdir	(   char * msg_ )
 }
 
 boolean MoveDirectory ( char * msg_ ) { 
-	struct iNode * curNode = nil;
+	struct iNode * curNode=nil,*aNode = (struct iNode*)getTopDirectoryStack ();
 	int index =0;
 	char aDir[32];
-	MemSet ( aDir, '\0', 32 );
 
 	if ( StrLen ( msg_ ) > 1 ) {
 		msg_+=1;
 		// Set directoryStack With Recursive
 		while ( StrLen(msg_) ) 
 		{
+			index=0;
+			MemSet ( aDir, '\0', 32 );
 			while ( (*msg_) != '/' )
 				aDir[index++] = (*msg_++);
 			
 			aDir[index] = '\0';
 			msg_++;
 			
-			curNode = SearchNameWithCurrentiNode ( (struct iNode*)getTopDirectoryStack (), aDir );
-			directoryStack[stackIndex++] = (unsigned int)curNode;
+			curNode = SearchNameWithCurrentiNode ( aNode, aDir );
+			if ( curNode ) 
+			{
+				directoryStack[stackIndex++] = (unsigned int)curNode;
+				aNode = curNode;
+			} else {
+				return true;
+			}
 		}			
 	}
 	return true;
@@ -194,13 +201,16 @@ boolean cmd_cd (   char * msg_ )
 {
 	int index=0;
 
-	if ( !StrLen(msg_) || msg_[0] == '/' ) {	// 아무것도 쓰지 않으면 루트로 이동
+	if ( !StrLen(msg_) || msg_[0] == '/' ) 
+	{	// 아무것도 쓰지 않으면 루트로 이동
 		directoryStack_Clear();
 		return MoveDirectory ( msg_ );
 	}
 
-	if ( !StrNCmp (msg_, "..", 2) ) {	// .. 의 케이스
-		directoryStack[stackIndex--] = nil;
+	if ( !StrNCmp (msg_, "..", 2) ) 
+	{	// .. 의 케이스
+		if ( stackIndex > 0 )
+			directoryStack[stackIndex--] = nil;
 		return true;
 	}
 
