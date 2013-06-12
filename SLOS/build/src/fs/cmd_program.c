@@ -79,7 +79,6 @@ boolean parse_cmd (   char * msg_ )
 	}
 	if ( !StrCmp (cmd, "cd")) {
 		cur_cmd_PTR = cmd+Max_Length;
-		if ( debug ) printf ( "  - Directory is ==> [ %s ]\n", cur_cmd_PTR );
 		cmd_cd ( cmd+Max_Length );
 		return true;
 	}
@@ -173,7 +172,7 @@ boolean MoveDirectory ( char * msg_ ) {
 	printf ( "Move Directory \n");
 	if ( StrLen ( msg_ ) > 1 ) {
 		// Set directoryStack With Recursive
-		while ( StrLen(msg_) ) 
+		while ( StrLen(msg_) > 0 ) 
 		{
 			index=0;
 			MemSet ( aDir, '\0', 32 );
