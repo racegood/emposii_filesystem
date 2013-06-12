@@ -170,7 +170,7 @@ boolean MoveDirectory ( char * msg_ ) {
 	struct iNode * curNode=nil,*aNode = (struct iNode*)getTopDirectoryStack ();
 	int index =0;
 	char aDir[32];
-
+	printf ( "Move Directory \n");
 	if ( StrLen ( msg_ ) > 1 ) {
 		// Set directoryStack With Recursive
 		while ( StrLen(msg_) ) 
@@ -179,8 +179,8 @@ boolean MoveDirectory ( char * msg_ ) {
 			MemSet ( aDir, '\0', 32 );
 			while ( (*msg_) != '/' )
 				aDir[index++] = (*msg_++);
-			
 			aDir[index] = '\0';
+			printf ( "aDir [%s] \n", aDir );	
 			msg_++;
 			
 			curNode = SearchNameWithCurrentiNode ( aNode, aDir );

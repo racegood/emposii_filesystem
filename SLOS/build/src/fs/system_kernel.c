@@ -285,15 +285,17 @@ struct iNode * ParsePath ( char * path_, struct iNode * curDir_ )
 {
 	char curPath[32];
 	int index=0;
+	printf ( " - ParsePath \n" );
 	MemSet ( curPath, '\0', 32 );
 
-	if ( (*path_) == '/' ) return ParsePath ( path_++, (struct iNode *)directoryStack[0] );
+	if ( path_[0] == '/' ) return ParsePath ( path_++, (struct iNode *)directoryStack[0] );
 	// Seperate path
 	while ( (*path_) != '\0' ) 
 	{
 		curPath[index++] = (*path_++);
 	}
 	curPath[index] = '\0';	
+	printf ( " -- ParsePath : curPath [%s] \n", curPath );
 	path_++;
 
 	if ( index == 0 ) return curDir_;
