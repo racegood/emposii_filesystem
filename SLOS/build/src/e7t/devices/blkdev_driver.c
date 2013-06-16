@@ -17,17 +17,9 @@
 #define BLOCK_INIT_PTR 0xA0600000
 #define BLOCK_END_PTR 0xA4000000
 
-typedef struct block_control_block{
-	int n_blocks;
-	int blocksleft;
-	block_datastr *blk;
-	unsigned int uid;
-} block_cb;
-
 /*****************************************************************************
  * STATICS
  *****************************************************************************/
-static block_cb bcb;
 static char tempblock[1048576];
 
 void blkdev_init(void)

@@ -1,3 +1,5 @@
+#ifndef _H_BLKDEVICE_
+#define _H_BLKDEVICE_
 /*
 description : initialize block control block
 return value : void
@@ -37,6 +39,15 @@ int get_blocksize(block_datastr *ptr);
 /*
 description : get data size from data
 return value : size of data
-   */
+ */
 int get_datasize(char *data);
 
+typedef struct block_control_block{
+	int n_blocks;
+	int blocksleft;
+	block_datastr *blk;
+	unsigned int uid;
+} block_cb;
+
+block_cb bcb;
+#endif

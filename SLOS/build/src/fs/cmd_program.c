@@ -37,6 +37,7 @@ char			nameSet[][8] = {
 		NULL
 };
 
+extern block_cb bcb;
 
 /**********************
  *  Function List     *
@@ -118,6 +119,9 @@ boolean parse_cmd (   char * msg_ )
 	}
 	else if ( !StrCmp ( cmd_array[0], "cp" )) {
 		return cmd_cp	( cmd_array[1], cmd_array[2] );
+	}
+	else if ( !StrCmp ( cmd_array[0], "usage" )) {
+		return cmd_usage	( );
 	}
 	else {
 		if ( debug ) printf( " - Command not Found [%s]\n",cmd_array[0] );
@@ -384,8 +388,7 @@ boolean cmd_cp ( char* name, char * destPath )
 		printf ( " -- [Error] File Creation is Failed -- [%s] \n\n", (aNode->File_Struct).name );
 	}
 
-
-	return iNode_AddShibling ( destNode, aNode );
+	return true;
 }
 
 boolean cmd_tree	(   char * msg_ ) 
@@ -409,6 +412,12 @@ boolean cmd_tree	(   char * msg_ )
 	// Print Count 
 	printf ( "\n %d Directories, %d Files \n\n", aSet.dir, aSet.other );
 	
+	return true;
+}
+
+boolean cmd_usage ( void )
+{
+	printf("%d/%d \n", bcb.blocksleft, bcb.n_blocks);
 	return true;
 }
 
