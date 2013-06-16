@@ -93,6 +93,7 @@ void shell(void)
 
 	file_system_start();
 
+	MemSet( command_line, '\0', 255 );
 	do 
 	{
 		len = readLine("EMPOSII-SLOS: ", command_line, 255);

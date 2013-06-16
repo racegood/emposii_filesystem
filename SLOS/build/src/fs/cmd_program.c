@@ -55,21 +55,23 @@ void DIRCountValueSet_init ( struct DIRCountValueSet * aSet)
 	aSet->other = 0;
 }
 
-boolean seperate_cmd ( char * cmd_, char ** arr_ ) 
+boolean seperate_cmd ( char * cmd_, unsigned int * arr_ ) 
 {	// arr_ 's Size - 4 
-	char * buf = cmd_;
 	int	cmd_count = 0;
 	printf ( "Seperate_cmd Start = [%s] \n\n", cmd_ );
-	while ( (*buf) != '\0' )
+	while ( (*cmd_) != '\0' )
 	{
-		// First Empty Space Erase  
-		while ( (*buf++) != ' ' ) { ; }
-		
-		arr_[cmd_count] = buf;
+		while((*cmd_) == ' ') cmd_++;
+		arr_[cmd_count] = (unsigned int)cmd_;
 
-		while ( (*buf++) != ' ' ) {;}
-		(*buf++) = '\0';
-		printf( " -- Sep %d, [%s]", cmd_count, arr_[cmd_count++]   ) ;
+		while((*cmd_) >= '0' && (*cmd_) <= 'z') cmd_++;
+		(*cmd_) = '\0';
+
+		printf("%d - %s\n", cmd_count, arr_[cmd_count]);
+
+		cmd_count++;
+		cmd_++;
+
 	}
 	return true;
 }
@@ -83,7 +85,7 @@ boolean seperate_cmd ( char * cmd_, char ** arr_ )
  */
 boolean parse_cmd (   char * msg_ ) 
 {
-	char * cmd_array[4];
+	char *cmd_array[4];
 
 	seperate_cmd ( msg_, cmd_array );
 
