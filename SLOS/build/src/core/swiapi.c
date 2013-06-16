@@ -229,16 +229,20 @@ UINT eventIODeviceReadBit(device_treestr *a, UID b)
  *  Example: eventIODeviceWriteBlock(handle,id,&block);
  */
 
-void eventIODeviceWriteBlock(device_treestr *a, UID b, void *c) 
+block_datastr *eventIODeviceWriteBlock(device_treestr *a, UID b, void *c) 
 {
 	registerstr tmpReg;
 
+	printf("eventIODeviceWriteBlock call!!\n");
 	tmpReg.r[0] = Event_IODeviceWriteBlock;
 	tmpReg.r[1] = (UINT) a;
 	tmpReg.r[2] = b;
 	tmpReg.r[3] = (UINT) c;
 
 	coreCallSWI(&tmpReg);
+	
+	printf("blockaddr : %x \n", (void*)tmpReg.r[0]);
+	return (void *)tmpReg.r[0];
 }
 
 /* -- event_eventIODeviceReadBlock --------------------------------------------
@@ -254,14 +258,14 @@ void eventIODeviceWriteBlock(device_treestr *a, UID b, void *c)
  *  Example: block = eventIODeviceReadBlock(handle,id);
  */
 
-void *eventIODeviceReadBlock(device_treestr *a, UID b) 
+char *eventIODeviceReadBlock(device_treestr *a, UID b, block_datastr *ptr) 
 {
 	registerstr tmpReg;
 
 	tmpReg.r[0] = Event_IODeviceReadBlock;
 	tmpReg.r[1] = (UINT) a;
 	tmpReg.r[2] = b;
-	tmpReg.r[3] = 0;
+	tmpReg.r[3] = ptr;
 
 	coreCallSWI(&tmpReg);
 

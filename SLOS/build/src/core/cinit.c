@@ -152,7 +152,7 @@ void cinit_init(void)
 	 * ------------------------------------------------------------------- 
 	 */
 
-		lltrace(eventTickInit(1),TICKINIT);
+//		lltrace(eventTickInit(1),TICKINIT);
 }
 
 /* -- C_Entry -----------------------------------------------------------------

@@ -4,16 +4,15 @@ Common symbol       size              file
 
 device_led          0x8               led_driver.o
 ledUID              0x4               button_service.o
-uid                 0x4               blkdev_driver.o
 host                0x4               cli_serial.o
 gpbuff              0x100             cli_com.o
 report_buff         0x4               cli_com.o
 seg                 0x4               task2_start.o
+blkdev              0x4               task1_start.o
 node                0x4               serial_driver.o
 rs                  0x10              swiapi.o
-led                 0x4               task1_start.o
+ublkdev             0x4               task1_start.o
 directoryStack      0x80              cmd_program.o
-uled                0x4               task1_start.o
 serial              0x4               cli_serial.o
 STATE               0x4               cinit.o
 countdown           0x4               tick_service.o
@@ -34,370 +33,378 @@ Linker script and memory map
                 0xa00c0000                . = 0xa00c0000
                 0xa00c0000                . = ALIGN (0x4)
 
-.text           0xa00c0000     0x36a8
+.text           0xa00c0000     0x386c
  *(.text)
  .text          0xa00c0000       0x44 start.o
                 0xa00c0000                _mainCRTStartup
                 0xa00c0000                _start
                 0xa00c0000                start
- .text          0xa00c0044       0x7c init.o
+ .text          0xa00c0044       0x80 init.o
                 0xa00c0044                coreInitialize
- .text          0xa00c00c0      0x100 pcb.o
-                0xa00c00e4                PCB_TopOfIRQStack
-                0xa00c017c                PCB_PtrTask2
-                0xa00c01c0                PCB_PtrTask3
-                0xa00c00e8                PCB_PtrCurrentTask
-                0xa00c0138                PCB_BottomTask2
-                0xa00c00c0                pcbSetUp
-                0xa00c00d8                PCB_Table
-                0xa00c017c                PCB_BottomTask3
-                0xa00c0138                PCB_PtrTask1
-                0xa00c00ec                PCB_PtrNextTask
-                0xa00c00f4                PCB_BottomTask1
-                0xa00c00f0                PCB_CurrentTask
- .text          0xa00c01c0      0x2f0 swiapi.o
-                0xa00c0360                eventIODeviceWriteBlock
-                0xa00c0394                eventIODeviceReadBlock
-                0xa00c02f0                eventIODeviceWriteBit
-                0xa00c01c0                eventIODeviceInit
-                0xa00c0404                bringUpFatalError
-                0xa00c0244                eventIODeviceClose
-                0xa00c043c                PutReg
-                0xa00c0280                eventIODeviceWriteByte
-                0xa00c03d0                bringUpTrace
-                0xa00c0324                eventIODeviceReadBit
-                0xa00c020c                eventIODeviceOpen
-                0xa00c02b4                eventIODeviceReadByte
- .text          0xa00c04b0        0x4 undef.o
-                0xa00c04b0                coreUndefinedHandler
- .text          0xa00c04b4       0x44 swi.o
-                0xa00c04cc                coreSWIHandler
-                0xa00c04b4                coreCallSWI
- .text          0xa00c04f8        0x4 prefetch.o
-                0xa00c04f8                corePrefetchAbortHandler
- .text          0xa00c04fc        0x4 data.o
-                0xa00c04fc                coreDataAbortHandler
- .text          0xa00c0500        0x4 reserved.o
-                0xa00c0500                coreReservedHandler
- .text          0xa00c0504        0x4 irq.o
-                0xa00c0504                coreIRQHandler
- .text          0xa00c0508        0x4 fiq.o
-                0xa00c0508                coreFIQHandler
- .text          0xa00c050c       0x8c scheduler.o
-                0xa00c050c                kernelScheduler
- .text          0xa00c0598      0x174 swi_handler.o
-                0xa00c0598                eventsSWIHandler
- .text          0xa00c070c       0x28 irq_handler.o
-                0xa00c0710                eventsIRQHandler
- .text          0xa00c0734       0x88 bringup.o
-                0xa00c0780                bringUpSetR8fiq
-                0xa00c07a8                bringUpSetR10fiq
-                0xa00c0794                bringUpSetR9fiq
-                0xa00c0764                bringUpInitFIQRegisters
- .text          0xa00c07bc       0x2c cpsr.o
-                0xa00c07bc                modifyControlCPSR
- .text          0xa00c07e8       0x14 event_init.o
-                0xa00c07e8                eventServicesInit
- .text          0xa00c07fc       0x84 button_service.o
-                0xa00c087c                eventButtonService
-                0xa00c07fc                eventButtonMaskIrq
-                0xa00c0800                eventButtonUnmaskIrq
-                0xa00c0804                eventButtonInit
-                0xa00c0808                eventButtonPressed
- .text          0xa00c0880      0x114 tick_service.o
-                0xa00c0974                enable_irq
-                0xa00c094c                eventTickStart
-                0xa00c08f0                eventTickService
-                0xa00c0880                eventTickInit
-                0xa00c0984                disable_irq
- .text          0xa00c0994      0x1e0 ddf_io.o
-                0xa00c09d0                ioOpenDriver
-                0xa00c0b1c                ioWriteBlock
-                0xa00c0a90                ioReadBit
-                0xa00c0b48                ioReadBlock
-                0xa00c0ac0                ioWriteByte
-                0xa00c0a64                ioWriteBit
-                0xa00c0994                ioInitializeDrivers
-                0xa00c0aec                ioReadByte
-                0xa00c0a38                ioCloseDriver
- .text          0xa00c0b74       0xf0 led_driver.o
-                0xa00c0c20                led_write_byte
-                0xa00c0c48                led_read_byte
-                0xa00c0bac                led_open
-                0xa00c0b74                led_init
-                0xa00c0bfc                led_close
- .text          0xa00c0c64      0x110 serial_driver.o
-                0xa00c0cf8                serial_write_byte
-                0xa00c0d34                serial_read_byte
-                0xa00c0c8c                serial_open
-                0xa00c0cd4                serial_close
-                0xa00c0c68                serial_init
-                0xa00c0c64                internalSerialE7TSetup
- .text          0xa00c0d74      0x230 segment_driver.o
-                0xa00c0f88                segment_read_byte
-                0xa00c0df8                segment_close
-                0xa00c0e1c                getSegmentCode
-                0xa00c0db4                segment_open
-                0xa00c0ef0                segment_write_byte
-                0xa00c0d74                segment_init
- .text          0xa00c0fa4      0x190 blkdev_driver.o
-                0xa00c1094                blkdev_write_block
-                0xa00c1048                blkdev_close
-                0xa00c1114                get_datasize
-                0xa00c106c                find_freeblock
-                0xa00c110c                blkdev_read_block
-                0xa00c1000                blkdev_open
-                0xa00c0fa4                blkdev_init
- .text          0xa00c1134       0x38 mutex.o
-                0xa00c1134                mutex_gatelock
-                0xa00c1154                mutex_gateunlock
- .text          0xa00c116c       0xec cinit.o
-                0xa00c116c                cinit_init
-                0xa00c11d0                C_Entry
- .text          0xa00c1258      0x394 cli_com.o
-                0xa00c15d8                CLI
-                0xa00c1380                writeHex
-                0xa00c1288                reportC
-                0xa00c157c                reportError
-                0xa00c13b8                prettyC
-                0xa00c139c                writeDec
-                0xa00c1464                formatString
-                0xa00c12a0                internal_write_dec
-                0xa00c1360                newLine
-                0xa00c156c                handleReportedError
-                0xa00c1258                writeC
-                0xa00c1270                readC
-                0xa00c1434                prettyPrint
-                0xa00c1574                reportOK
-                0xa00c1330                write0
-                0xa00c12f0                internal_write_hex
- .text          0xa00c15ec      0x448 cli_readline.o
-                0xa00c17dc                ReadLineZ
-                0xa00c15ec                xstrlen
-                0xa00c1614                xstrcpy
-                0xa00c184c                readLine
-                0xa00c1628                xmemmove
- .text          0xa00c1a34       0x3c cli_shell.o
-                0xa00c1a34                shell
- .text          0xa00c1a70      0x138 cli_serial.o
-                0xa00c1b68                closeHost
-                0xa00c1b38                readCharFromHost
-                0xa00c1ad4                writeCharToHost
-                0xa00c1a70                openHost
-                0xa00c1b04                printToHost
- .text          0xa00c1ba8       0x18 uid.o
-                0xa00c1ba8                uid_generate
- .text          0xa00c1bc0      0x14c task1_start.o
-                0xa00c1c40                readLED
-                0xa00c1c10                writeLED
-                0xa00c1c70                C_EntryTask1
-                0xa00c1bc0                openLED
- .text          0xa00c1d0c      0x120 task2_start.o
-                0xa00c1d58                closeSEGMENT
-                0xa00c1dac                C_EntryTask2
-                0xa00c1d7c                writeSEGMENT
-                0xa00c1d0c                openSEGMENT
- .text          0xa00c1e2c       0x9c task3_start.o
-                0xa00c1e88                C_EntryTask3
-                0xa00c1e2c                banner
- .text          0xa00c1ec8       0x2c debug.o
-                0xa00c1ed4                debug_led_test
- .text          0xa00c1ef4      0x108 serial.o
-                0xa00c1fc8                PutString
-                0xa00c1f84                PutChar
-                0xa00c1ef4                SerialInit
- .text          0xa00c1ffc      0xb84 lib.o
-                0xa00c23f0                PrintDec
-                0xa00c1ffc                MemCpy32
-                0xa00c287c                printf
-                0xa00c25f0                PrintHex
-                0xa00c208c                MemCmp
-                0xa00c2a4c                ClearLine
-                0xa00c22bc                StrToInt
-                0xa00c2048                MemCpy
-                0xa00c23c4                MOD
-                0xa00c21ac                HexToInt
-                0xa00c2a68                StrTok
-                0xa00c2068                MemSet
-                0xa00c2108                StrLen
-                0xa00c283c                PrintString
-                0xa00c23d4                DEV
-                0xa00c23a8                PrintChar
-                0xa00c2a28                Power
-                0xa00c2164                StrNCmp
-                0xa00c20e0                StrCmp
-                0xa00c2ad0                StrSpn
-                0xa00c29bc                DecToLong
-                0xa00c2b34                StrpBrk
-                0xa00c2138                StrCpy
- .text          0xa00c2b80      0x390 system_kernel.o
-                0xa00c2b80                FileManager_Initialize
-                0xa00c2f08                LoadDirectoryStructure
-                0xa00c2e40                setHeader
-                0xa00c2f00                FindInsideDirectory
-                0xa00c2bcc                SearchEmptyFileManager
-                0xa00c2d4c                RemoveDirectory
-                0xa00c2e78                SearchWithName
-                0xa00c2c00                CreateDirectory
- .text          0xa00c2f10       0x64 file_structure.o
-                0xa00c2f30                FileStructure_SetDirectoryWithName
-                0xa00c2f10                FileStruct_Initialize
- .text          0xa00c2f74      0x520 cmd_program.o
-                0xa00c33c8                SuperBlock_PrintTree
-                0xa00c322c                cmd_mkdir
-                0xa00c31e4                directoryStack_Clear
-                0xa00c31d4                getDirectoryStack
-                0xa00c314c                PrintFiles
-                0xa00c2f84                parse_cmd
-                0xa00c336c                cmd_tree
-                0xa00c3290                cmd_cd
-                0xa00c31b8                getTopDirectoryStack
-                0xa00c3260                cmd_ls
-                0xa00c2f74                DIRCountValueSet_init
-                0xa00c3278                cmd_rmdir
- .text          0xa00c3494       0xd4 file_system.o
-                0xa00c3550                directoryPath
-                0xa00c3494                file_system_start
-                0xa00c34f4                Initialize
- .text          0xa00c3568      0x140 iNode.o
-                0xa00c3608                iNode_getName
-                0xa00c3600                iNode_SetSuperBlock
-                0xa00c3690                iNode_SetPhysicalAddress
-                0xa00c3568                iNode_Initialize
-                0xa00c3644                iNode_FindHeadNode
-                0xa00c3678                iNode_Release
-                0xa00c364c                iNode_AddShibling
-                0xa00c35ec                iNode_SetDirectory
-                0xa00c35b8                iNode_SetDirectoryWithSuperBlock
+ .text          0xa00c00c4      0x100 pcb.o
+                0xa00c00e8                PCB_TopOfIRQStack
+                0xa00c0180                PCB_PtrTask2
+                0xa00c01c4                PCB_PtrTask3
+                0xa00c00ec                PCB_PtrCurrentTask
+                0xa00c013c                PCB_BottomTask2
+                0xa00c00c4                pcbSetUp
+                0xa00c00dc                PCB_Table
+                0xa00c0180                PCB_BottomTask3
+                0xa00c013c                PCB_PtrTask1
+                0xa00c00f0                PCB_PtrNextTask
+                0xa00c00f8                PCB_BottomTask1
+                0xa00c00f4                PCB_CurrentTask
+ .text          0xa00c01c4      0x318 swiapi.o
+                0xa00c0364                eventIODeviceWriteBlock
+                0xa00c03c4                eventIODeviceReadBlock
+                0xa00c02f4                eventIODeviceWriteBit
+                0xa00c01c4                eventIODeviceInit
+                0xa00c0430                bringUpFatalError
+                0xa00c0248                eventIODeviceClose
+                0xa00c0468                PutReg
+                0xa00c0284                eventIODeviceWriteByte
+                0xa00c03fc                bringUpTrace
+                0xa00c0328                eventIODeviceReadBit
+                0xa00c0210                eventIODeviceOpen
+                0xa00c02b8                eventIODeviceReadByte
+ .text          0xa00c04dc        0x4 undef.o
+                0xa00c04dc                coreUndefinedHandler
+ .text          0xa00c04e0       0x44 swi.o
+                0xa00c04f8                coreSWIHandler
+                0xa00c04e0                coreCallSWI
+ .text          0xa00c0524        0x4 prefetch.o
+                0xa00c0524                corePrefetchAbortHandler
+ .text          0xa00c0528        0x4 data.o
+                0xa00c0528                coreDataAbortHandler
+ .text          0xa00c052c        0x4 reserved.o
+                0xa00c052c                coreReservedHandler
+ .text          0xa00c0530        0x4 irq.o
+                0xa00c0530                coreIRQHandler
+ .text          0xa00c0534        0x4 fiq.o
+                0xa00c0534                coreFIQHandler
+ .text          0xa00c0538       0x8c scheduler.o
+                0xa00c0538                kernelScheduler
+ .text          0xa00c05c4      0x174 swi_handler.o
+                0xa00c05c4                eventsSWIHandler
+ .text          0xa00c0738       0x28 irq_handler.o
+                0xa00c073c                eventsIRQHandler
+ .text          0xa00c0760       0x88 bringup.o
+                0xa00c07ac                bringUpSetR8fiq
+                0xa00c07d4                bringUpSetR10fiq
+                0xa00c07c0                bringUpSetR9fiq
+                0xa00c0790                bringUpInitFIQRegisters
+ .text          0xa00c07e8       0x2c cpsr.o
+                0xa00c07e8                modifyControlCPSR
+ .text          0xa00c0814       0x14 event_init.o
+                0xa00c0814                eventServicesInit
+ .text          0xa00c0828       0x84 button_service.o
+                0xa00c08a8                eventButtonService
+                0xa00c0828                eventButtonMaskIrq
+                0xa00c082c                eventButtonUnmaskIrq
+                0xa00c0830                eventButtonInit
+                0xa00c0834                eventButtonPressed
+ .text          0xa00c08ac      0x114 tick_service.o
+                0xa00c09a0                enable_irq
+                0xa00c0978                eventTickStart
+                0xa00c091c                eventTickService
+                0xa00c08ac                eventTickInit
+                0xa00c09b0                disable_irq
+ .text          0xa00c09c0      0x1fc ddf_io.o
+                0xa00c09fc                ioOpenDriver
+                0xa00c0b48                ioWriteBlock
+                0xa00c0abc                ioReadBit
+                0xa00c0b8c                ioReadBlock
+                0xa00c0aec                ioWriteByte
+                0xa00c0a90                ioWriteBit
+                0xa00c09c0                ioInitializeDrivers
+                0xa00c0b18                ioReadByte
+                0xa00c0a64                ioCloseDriver
+ .text          0xa00c0bbc       0xf0 led_driver.o
+                0xa00c0c68                led_write_byte
+                0xa00c0c90                led_read_byte
+                0xa00c0bf4                led_open
+                0xa00c0bbc                led_init
+                0xa00c0c44                led_close
+ .text          0xa00c0cac      0x110 serial_driver.o
+                0xa00c0d40                serial_write_byte
+                0xa00c0d7c                serial_read_byte
+                0xa00c0cd4                serial_open
+                0xa00c0d1c                serial_close
+                0xa00c0cb0                serial_init
+                0xa00c0cac                internalSerialE7TSetup
+ .text          0xa00c0dbc      0x230 segment_driver.o
+                0xa00c0fd0                segment_read_byte
+                0xa00c0e40                segment_close
+                0xa00c0e64                getSegmentCode
+                0xa00c0dfc                segment_open
+                0xa00c0f38                segment_write_byte
+                0xa00c0dbc                segment_init
+ .text          0xa00c0fec      0x2b0 blkdev_driver.o
+                0xa00c10ac                blkdev_write_block
+                0xa00c1060                blkdev_close
+                0xa00c1224                get_blockdatasize
+                0xa00c11fc                get_datasize
+                0xa00c1084                find_freeblock
+                0xa00c1258                get_blocksize
+                0xa00c1150                blkdev_read_block
+                0xa00c101c                blkdev_open
+                0xa00c0fec                blkdev_init
+ .text          0xa00c129c       0x38 mutex.o
+                0xa00c129c                mutex_gatelock
+                0xa00c12bc                mutex_gateunlock
+ .text          0xa00c12d4       0xc8 cinit.o
+                0xa00c12d4                cinit_init
+                0xa00c1314                C_Entry
+ .text          0xa00c139c      0x394 cli_com.o
+                0xa00c171c                CLI
+                0xa00c14c4                writeHex
+                0xa00c13cc                reportC
+                0xa00c16c0                reportError
+                0xa00c14fc                prettyC
+                0xa00c14e0                writeDec
+                0xa00c15a8                formatString
+                0xa00c13e4                internal_write_dec
+                0xa00c14a4                newLine
+                0xa00c16b0                handleReportedError
+                0xa00c139c                writeC
+                0xa00c13b4                readC
+                0xa00c1578                prettyPrint
+                0xa00c16b8                reportOK
+                0xa00c1474                write0
+                0xa00c1434                internal_write_hex
+ .text          0xa00c1730      0x448 cli_readline.o
+                0xa00c1920                ReadLineZ
+                0xa00c1730                xstrlen
+                0xa00c1758                xstrcpy
+                0xa00c1990                readLine
+                0xa00c176c                xmemmove
+ .text          0xa00c1b78       0x3c cli_shell.o
+                0xa00c1b78                shell
+ .text          0xa00c1bb4      0x138 cli_serial.o
+                0xa00c1cac                closeHost
+                0xa00c1c7c                readCharFromHost
+                0xa00c1c18                writeCharToHost
+                0xa00c1bb4                openHost
+                0xa00c1c48                printToHost
+ .text          0xa00c1cec       0x18 uid.o
+                0xa00c1cec                uid_generate
+ .text          0xa00c1d04      0x19c task1_start.o
+                0xa00c1d04                openBLKDEV
+                0xa00c1dc8                C_EntryTask1
+                0xa00c1d98                readBLKDEV
+                0xa00c1d54                writeBLKDEV
+ .text          0xa00c1ea0      0x128 task2_start.o
+                0xa00c1eec                closeSEGMENT
+                0xa00c1f40                C_EntryTask2
+                0xa00c1f10                writeSEGMENT
+                0xa00c1ea0                openSEGMENT
+ .text          0xa00c1fc8       0x9c task3_start.o
+                0xa00c2024                C_EntryTask3
+                0xa00c1fc8                banner
+ .text          0xa00c2064       0x2c debug.o
+                0xa00c2070                debug_led_test
+ .text          0xa00c2090      0x108 serial.o
+                0xa00c2164                PutString
+                0xa00c2120                PutChar
+                0xa00c2090                SerialInit
+ .text          0xa00c2198      0xb84 lib.o
+                0xa00c258c                PrintDec
+                0xa00c2198                MemCpy32
+                0xa00c2a18                printf
+                0xa00c278c                PrintHex
+                0xa00c2228                MemCmp
+                0xa00c2be8                ClearLine
+                0xa00c2458                StrToInt
+                0xa00c21e4                MemCpy
+                0xa00c2560                MOD
+                0xa00c2348                HexToInt
+                0xa00c2c04                StrTok
+                0xa00c2204                MemSet
+                0xa00c22a4                StrLen
+                0xa00c29d8                PrintString
+                0xa00c2570                DEV
+                0xa00c2544                PrintChar
+                0xa00c2bc4                Power
+                0xa00c2300                StrNCmp
+                0xa00c227c                StrCmp
+                0xa00c2c6c                StrSpn
+                0xa00c2b58                DecToLong
+                0xa00c2cd0                StrpBrk
+                0xa00c22d4                StrCpy
+ .text          0xa00c2d1c      0x390 system_kernel.o
+                0xa00c2d1c                FileManager_Initialize
+                0xa00c30a4                LoadDirectoryStructure
+                0xa00c2fdc                setHeader
+                0xa00c309c                FindInsideDirectory
+                0xa00c2d68                SearchEmptyFileManager
+                0xa00c2ee8                RemoveDirectory
+                0xa00c3014                SearchWithName
+                0xa00c2d9c                CreateDirectory
+ .text          0xa00c30ac       0x64 file_structure.o
+                0xa00c30cc                FileStructure_SetDirectoryWithName
+                0xa00c30ac                FileStruct_Initialize
+ .text          0xa00c3110      0x520 cmd_program.o
+                0xa00c3564                SuperBlock_PrintTree
+                0xa00c33c8                cmd_mkdir
+                0xa00c3380                directoryStack_Clear
+                0xa00c3370                getDirectoryStack
+                0xa00c32e8                PrintFiles
+                0xa00c3120                parse_cmd
+                0xa00c3508                cmd_tree
+                0xa00c342c                cmd_cd
+                0xa00c3354                getTopDirectoryStack
+                0xa00c33fc                cmd_ls
+                0xa00c3110                DIRCountValueSet_init
+                0xa00c3414                cmd_rmdir
+ .text          0xa00c3630       0xd4 file_system.o
+                0xa00c36ec                directoryPath
+                0xa00c3630                file_system_start
+                0xa00c3690                Initialize
+ .text          0xa00c3704      0x140 iNode.o
+                0xa00c37a4                iNode_getName
+                0xa00c379c                iNode_SetSuperBlock
+                0xa00c382c                iNode_SetPhysicalAddress
+                0xa00c3704                iNode_Initialize
+                0xa00c37e0                iNode_FindHeadNode
+                0xa00c3814                iNode_Release
+                0xa00c37e8                iNode_AddShibling
+                0xa00c3788                iNode_SetDirectory
+                0xa00c3754                iNode_SetDirectoryWithSuperBlock
+ .text          0xa00c3844       0x28 block_init.o
+                0xa00c3844                block_init
 
-.glue_7         0xa00c36a8        0x0
+.glue_7         0xa00c386c        0x0
 
-.glue_7t        0xa00c36a8        0x0
-                0xa00c36a8                . = ALIGN (0x4)
+.glue_7t        0xa00c386c        0x0
+                0xa00c386c                . = ALIGN (0x4)
 
-.rodata         0xa00c36a8       0x14
+.rodata         0xa00c386c       0x14
  *(.rodata)
- .rodata        0xa00c36a8       0x14 cli_com.o
-                0xa00c36a8                digits
+ .rodata        0xa00c386c       0x14 cli_com.o
+                0xa00c386c                digits
 
-.rodata.str1.4  0xa00c36bc      0x3c9
+.rodata.str1.4  0xa00c3880      0x445
  .rodata.str1.4
-                0xa00c36bc       0x2b swiapi.o
-                                 0x30 (size before relaxing)
- *fill*         0xa00c36e7        0x1 00
+                0xa00c3880       0x5f swiapi.o
+                                 0x64 (size before relaxing)
+ *fill*         0xa00c38df        0x1 00
  .rodata.str1.4
-                0xa00c36e8        0x8 cli_readline.o
+                0xa00c38e0       0x15 ddf_io.o
+                                 0x18 (size before relaxing)
+ *fill*         0xa00c38f5        0x3 00
  .rodata.str1.4
-                0xa00c36f0        0xf cli_shell.o
+                0xa00c38f8        0x8 cli_readline.o
+ .rodata.str1.4
+                0xa00c3900        0xf cli_shell.o
                                  0x10 (size before relaxing)
- *fill*         0xa00c36ff        0x1 00
+ *fill*         0xa00c390f        0x1 00
  .rodata.str1.4
-                0xa00c3700       0x75 task3_start.o
+                0xa00c3910       0x2e task1_start.o
+                                 0x34 (size before relaxing)
+ *fill*         0xa00c393e        0x2 00
+ .rodata.str1.4
+                0xa00c3940       0x75 task3_start.o
                                  0x78 (size before relaxing)
- *fill*         0xa00c3775        0x3 00
+ *fill*         0xa00c39b5        0x3 00
  .rodata.str1.4
-                0xa00c3778       0x45 lib.o
+                0xa00c39b8       0x45 lib.o
                                  0x48 (size before relaxing)
- *fill*         0xa00c37bd        0x3 00
+ *fill*         0xa00c39fd        0x3 00
  .rodata.str1.4
-                0xa00c37c0      0x124 system_kernel.o
+                0xa00c3a00      0x124 system_kernel.o
  .rodata.str1.4
-                0xa00c38e4       0xd5 cmd_program.o
+                0xa00c3b24       0xd5 cmd_program.o
                                  0xdc (size before relaxing)
- *fill*         0xa00c39b9        0x3 00
+ *fill*         0xa00c3bf9        0x3 00
  .rodata.str1.4
-                0xa00c39bc       0xc5 file_system.o
+                0xa00c3bfc       0xc5 file_system.o
                                  0xc8 (size before relaxing)
- *fill*         0xa00c3a81        0x3 00
+ *fill*         0xa00c3cc1        0x3 00
  .rodata.str1.4
-                0xa00c3a84        0x1 iNode.o
+                0xa00c3cc4        0x1 iNode.o
                                   0xc (size before relaxing)
-                0xa00c3a88                . = ALIGN (0x4)
+                0xa00c3cc8                . = ALIGN (0x4)
 
-.data           0xa00c3a88       0xb0
+.data           0xa00c3cc8       0xd8
  *(.data)
- .data          0xa00c3a88       0xa0 ddf_io.o
-                0xa00c3a88                devices
- .data          0xa00c3b28        0x4 mutex.o
-                0xa00c3b28                semaphore
- .data          0xa00c3b2c        0x4 uid.o
-                0xa00c3b2c                new_uid
- .data          0xa00c3b30        0x4 system_kernel.o
-                0xa00c3b30                header
- .data          0xa00c3b34        0x4 cmd_program.o
-                0xa00c3b34                stackIndex
-                0xa00c3b38                . = ALIGN (0x4)
+ .data          0xa00c3cc8       0xc8 ddf_io.o
+                0xa00c3cc8                devices
+ .data          0xa00c3d90        0x4 mutex.o
+                0xa00c3d90                semaphore
+ .data          0xa00c3d94        0x4 uid.o
+                0xa00c3d94                new_uid
+ .data          0xa00c3d98        0x4 system_kernel.o
+                0xa00c3d98                header
+ .data          0xa00c3d9c        0x4 cmd_program.o
+                0xa00c3d9c                stackIndex
+                0xa00c3da0                . = ALIGN (0x4)
 
 .got
  *(.got)
-                0xa00c3b38                . = ALIGN (0x4)
+                0xa00c3da0                . = ALIGN (0x4)
 
-.bss            0xa00c3b40     0x34c0
+.bss            0xa00c3da0   0x1034a0
  *(.bss)
- .bss           0xa00c3b40        0xc blkdev_driver.o
- .bss           0xa00c3b4c        0x4 cli_com.o
- *fill*         0xa00c3b50       0x10 00
- COMMON         0xa00c3b60       0x10 swiapi.o
+ .bss           0xa00c3da0   0x100010 blkdev_driver.o
+ .bss           0xa01c3db0        0x4 cli_com.o
+ *fill*         0xa01c3db4        0xc 00
+ COMMON         0xa01c3dc0       0x10 swiapi.o
                                   0x0 (size before relaxing)
-                0xa00c3b60                rs
- *fill*         0xa00c3b70       0x10 00
- COMMON         0xa00c3b80       0x24 button_service.o
+                0xa01c3dc0                rs
+ *fill*         0xa01c3dd0       0x10 00
+ COMMON         0xa01c3de0       0x24 button_service.o
                                   0x0 (size before relaxing)
-                0xa00c3b80                ledUID
-                0xa00c3ba0                ledNode
- *fill*         0xa00c3ba4       0x1c 00
- COMMON         0xa00c3bc0        0x4 tick_service.o
+                0xa01c3de0                ledUID
+                0xa01c3e00                ledNode
+ *fill*         0xa01c3e04       0x1c 00
+ COMMON         0xa01c3e20        0x4 tick_service.o
                                   0x0 (size before relaxing)
-                0xa00c3bc0                countdown
- *fill*         0xa00c3bc4       0x1c 00
- COMMON         0xa00c3be0        0x8 led_driver.o
+                0xa01c3e20                countdown
+ *fill*         0xa01c3e24       0x1c 00
+ COMMON         0xa01c3e40        0x8 led_driver.o
                                   0x0 (size before relaxing)
-                0xa00c3be0                device_led
- *fill*         0xa00c3be8       0x18 00
- COMMON         0xa00c3c00        0x4 serial_driver.o
+                0xa01c3e40                device_led
+ *fill*         0xa01c3e48       0x18 00
+ COMMON         0xa01c3e60        0x4 serial_driver.o
                                   0x0 (size before relaxing)
-                0xa00c3c00                node
- *fill*         0xa00c3c04       0x1c 00
- COMMON         0xa00c3c20        0x8 segment_driver.o
+                0xa01c3e60                node
+ *fill*         0xa01c3e64       0x1c 00
+ COMMON         0xa01c3e80        0x8 segment_driver.o
                                   0x0 (size before relaxing)
-                0xa00c3c20                segment
- *fill*         0xa00c3c28       0x18 00
- COMMON         0xa00c3c40        0x4 blkdev_driver.o
+                0xa01c3e80                segment
+ *fill*         0xa01c3e88       0x18 00
+ COMMON         0xa01c3ea0        0x4 cinit.o
                                   0x0 (size before relaxing)
-                0xa00c3c40                uid
- *fill*         0xa00c3c44       0x1c 00
- COMMON         0xa00c3c60        0x4 cinit.o
+                0xa01c3ea0                STATE
+ *fill*         0xa01c3ea4       0x1c 00
+ COMMON         0xa01c3ec0      0x224 cli_com.o
                                   0x0 (size before relaxing)
-                0xa00c3c60                STATE
- *fill*         0xa00c3c64       0x1c 00
- COMMON         0xa00c3c80      0x224 cli_com.o
+                0xa01c3ec0                gpbuff
+                0xa01c3fc0                report_buff
+                0xa01c3fc8                command_line
+                0xa01c40e0                error_buff
+ *fill*         0xa01c40e4       0x1c 00
+ COMMON         0xa01c4100       0x24 cli_serial.o
                                   0x0 (size before relaxing)
-                0xa00c3c80                gpbuff
-                0xa00c3d80                report_buff
-                0xa00c3d88                command_line
-                0xa00c3ea0                error_buff
- *fill*         0xa00c3ea4       0x1c 00
- COMMON         0xa00c3ec0       0x24 cli_serial.o
+                0xa01c4100                host
+                0xa01c4120                serial
+ *fill*         0xa01c4124       0x1c 00
+ COMMON         0xa01c4140       0x24 task1_start.o
                                   0x0 (size before relaxing)
-                0xa00c3ec0                host
-                0xa00c3ee0                serial
- *fill*         0xa00c3ee4       0x1c 00
- COMMON         0xa00c3f00       0x24 task1_start.o
+                0xa01c4140                blkdev
+                0xa01c4160                ublkdev
+ *fill*         0xa01c4164       0x1c 00
+ COMMON         0xa01c4180       0x24 task2_start.o
                                   0x0 (size before relaxing)
-                0xa00c3f00                led
-                0xa00c3f20                uled
- *fill*         0xa00c3f24       0x1c 00
- COMMON         0xa00c3f40       0x24 task2_start.o
+                0xa01c4180                seg
+                0xa01c41a0                useg
+ *fill*         0xa01c41a4       0x1c 00
+ COMMON         0xa01c41c0     0x3000 system_kernel.o
                                   0x0 (size before relaxing)
-                0xa00c3f40                seg
-                0xa00c3f60                useg
- *fill*         0xa00c3f64       0x1c 00
- COMMON         0xa00c3f80     0x3000 system_kernel.o
+                0xa01c41c0                FileManager
+ COMMON         0xa01c71c0       0x80 cmd_program.o
                                   0x0 (size before relaxing)
-                0xa00c3f80                FileManager
- COMMON         0xa00c6f80       0x80 cmd_program.o
-                                  0x0 (size before relaxing)
-                0xa00c6f80                directoryStack
+                0xa01c71c0                directoryStack
 LOAD start.o
 LOAD init.o
 LOAD pcb.o
@@ -440,6 +447,7 @@ LOAD file_structure.o
 LOAD cmd_program.o
 LOAD file_system.o
 LOAD iNode.o
+LOAD block_init.o
 OUTPUT(slos-elf32 elf32-littlearm)
 
 .comment        0x00000000      0x2d6

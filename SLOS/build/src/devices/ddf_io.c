@@ -232,11 +232,12 @@ BYTE ioReadByte(device_treestr *d,UID id)
  *
  */ 
 
-void ioWriteBlock(device_treestr *d,UID id, block_datastr *block) 
+block_datastr *ioWriteBlock(device_treestr *d,UID id, char *data) 
 {
 	if (d==(device_treestr *)0) {return;}
+	printf("ioWriteBlock call!!\n");
 
-	d->write.block(id,block);
+	return d->write.block(id,data);
 }
 
 /* -- ioReadBlock -------------------------------------------------------------
@@ -250,10 +251,10 @@ void ioWriteBlock(device_treestr *d,UID id, block_datastr *block)
  *
  */ 
 
-block_datastr *ioReadBlock (device_treestr *d,UID id) 
+char *ioReadBlock (device_treestr *d,UID id, block_datastr *ptr) 
 {
 	if (d==(device_treestr *)0) {return 0;}
 
-	return d->read.block(id);
+	return d->read.block(id, ptr);
 }
 

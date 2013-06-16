@@ -67,6 +67,7 @@ coreInitialize:
 	 LDR	 r2,=0xA0600000
      BL      pcbSetUp
 
+	 BL		 block_init
 @ -- set the current ID to TASK1 ...........
 
      LDR     r0, =PCB_CurrentTask

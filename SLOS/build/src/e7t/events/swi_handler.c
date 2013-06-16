@@ -217,11 +217,11 @@ fatalerror: goto fatalerror; /* setup infinite loop ... */
 					break;
 
 				case /* SWI */ Event_IODeviceWriteBlock:
-					ioWriteBlock ((device_treestr *)r->r[1],(UID)r->r[2],(void *)r->r[3]);
+					r->r[0] = (unsigned int) ioWriteBlock ((device_treestr *)r->r[1],(UID)r->r[2],(char *)r->r[3]);
 					break;
 
 				case /* SWI */ Event_IODeviceReadBlock:
-					r->r[0] = (unsigned int) ioReadBlock ((device_treestr *)r->r[1],(UID)r->r[2]);
+					r->r[0] = (unsigned int) ioReadBlock ((device_treestr *)r->r[1],(UID)r->r[2], (block_datastr *)r->r[3]);
 					break;
 
 			}

@@ -213,7 +213,7 @@ UINT eventIODeviceReadBit(device_treestr *,UID);
  *  Example: eventIODeviceWriteBlock(handle,id,&block);
  */
 
-void eventIODeviceWriteBlock(device_treestr *,UID,void *);
+block_datastr *eventIODeviceWriteBlock(device_treestr *,UID,void *);
 
 /* -- event_eventIODeviceReadBlock --------------------------------------------
  *
@@ -228,5 +228,5 @@ void eventIODeviceWriteBlock(device_treestr *,UID,void *);
  *  Example: block = eventIODeviceReadBlock(handle,id);
  */
 
-void *eventIODeviceReadBlock(device_treestr *a, UID b);
+char *eventIODeviceReadBlock(device_treestr *a, UID b, block_datastr *ptr);
 

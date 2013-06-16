@@ -224,7 +224,7 @@ typedef struct device_tree {
      *
      */
 
-    block_datastr 	*(*block) (UID);
+    char 	*(*block) (UID, block_datastr *);
     
     } read;
 

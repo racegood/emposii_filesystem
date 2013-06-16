@@ -50,7 +50,8 @@ system_kernel.o \
 file_structure.o \
 cmd_program.o \
 file_system.o \
-iNode.o 
+iNode.o \
+block_init.o
 
 ELF_EXEC = slos-elf32
 
@@ -191,6 +192,9 @@ task2_start.o : ../src/apps/task2_start.c
 task3_start.o : ../src/apps/task3_start.c
 	${CC} ${CFLAGS} -o $@ $<
 
+block_init.o : ../src/block_init.s
+	${ASSEMBLER} ${ASFLAGS} -o $@ $<
+	
 clean :
 	rm -rf *.o
 	rm -rf ../image/*

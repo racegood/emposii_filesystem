@@ -181,7 +181,7 @@ BYTE ioReadByte(device_treestr *d,UID id);
  *
  */ 
 
-void ioWriteBlock(device_treestr *d,UID id, block_datastr *block);
+block_datastr *ioWriteBlock(device_treestr *d,UID id, char *data);
 
 /* -- ioReadBlock -------------------------------------------------------------
  * 
@@ -194,5 +194,5 @@ void ioWriteBlock(device_treestr *d,UID id, block_datastr *block);
  *
  */ 
 
-block_datastr *ioReadBlock(device_treestr *d,UID id);
+char *ioReadBlock(device_treestr *d,UID id, block_datastr *ptr);
 

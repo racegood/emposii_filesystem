@@ -79,14 +79,13 @@
 #include "../headers/api_device.h"
 
 #include "../serial/serial.h"
-#define DELAY_LIMIT 0x100
 
 /*****************************************************************************
  * STATICS
  *****************************************************************************/
 
-device_treestr *led;
-UID uled;
+device_treestr *blkdev;
+UID ublkdev;
 
 /*****************************************************************************
  * ROTUINES
@@ -102,7 +101,7 @@ UID uled;
  *
  */
 
-BOOL openLED(void) 
+BOOL openBLKDEV(void) 
 { 
 	unsigned int delay;
 	/* --------------------------------------------------------------
@@ -114,12 +113,12 @@ BOOL openLED(void)
 	 * --------------------------------------------------------------
 	 */
 
-	led = eventIODeviceOpen(&led,DEVICE_LED_E7T,1);
-	uled = led->uid;
+	blkdev = eventIODeviceOpen(&blkdev,DEVICE_BLOCK_EMPOSII,1);
+	ublkdev = blkdev->uid;
 
 	/* check the UID .................. */
 
-	switch (uled) 
+	switch (ublkdev) 
 	{
 		case DEVICE_IN_USE:
 		case DEVICE_UNKNOWN:
@@ -129,15 +128,19 @@ BOOL openLED(void)
 	return TRUE; 
 }
 
-void writeLED(int num)
+block_datastr *writeBLKDEV(UID uid, char* dat)
 {
-	eventIODeviceWriteByte(led, uled, (UINT)num);
+	block_datastr *blk_datastr = NULL;
+
+	blk_datastr = eventIODeviceWriteBlock(blkdev, uid, dat);
+	printf("blk_datastr : %x\n", blk_datastr);
+	return blk_datastr;
 }
 
-BYTE readLED()
+char *readBLKDEV(UID uid, block_datastr *blk_datastr)
 {
-	BYTE ret;
-	ret = eventIODeviceReadByte(led, uled);
+	char *ret;
+	ret = eventIODeviceReadBlock(blkdev, ublkdev, blk_datastr);
 	return ret;
 }
 
@@ -154,28 +157,26 @@ BYTE readLED()
 
 void C_EntryTask1(void)
 {
-	volatile int delay;
 	int i=0, j=1;
-	BYTE ret;
+	unsigned int delay;
+	char dat[2000];
+	block_datastr *blk_datastr;
 
-	if (openLED ()==TRUE)
+	if(openBLKDEV() == TRUE)
 	{
-		while (1) 
+		printf("open blkdevice - uid[%d]\n",ublkdev);
+		int i;
+
+		for(i=0;i<2000;i++)
 		{
-			if(i > 255)
-			{
-				i = 0;
-				j = 1;
-			}
-
-			writeLED(i);
-
-			i = i + j;
-			j = j << 1;
-
-			/* dummy time delay... */
-			for (delay=0; delay<0x0aafff; delay++) {} 
+			if(i % 10 == 0)
+				dat[i] = '\n';
+			else
+				dat[i] = '1';
 		}
+		dat[i] = '\0';
+		blk_datastr = writeBLKDEV(ublkdev, dat);
+		printf("%s\n", readBLKDEV(ublkdev, blk_datastr));
 	}
 
 	/* 

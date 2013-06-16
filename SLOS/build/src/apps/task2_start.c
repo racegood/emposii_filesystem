@@ -122,7 +122,6 @@ void writeSEGMENT(int val)
  *
  */
 
-extern int readLED(void);
 
 void C_EntryTask2(void)
 {
@@ -133,8 +132,8 @@ void C_EntryTask2(void)
 	{
 		while (1) 
 		{
-			value = readLED();
-			writeSEGMENT(value);
+			//value = readLED();
+			writeSEGMENT(value++);
 
 			/* dummy time delay...*/
 			for (delay=0; delay<0x0aafff; delay++) {} 

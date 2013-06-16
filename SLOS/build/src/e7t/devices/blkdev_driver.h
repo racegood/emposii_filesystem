@@ -5,6 +5,7 @@ int blkdev_close(UID id);
 
 block_datastr *blkdev_write_block(UID id,char *data);
 
-block_datastr *blkdev_read_block(UID id);
-
+char *blkdev_read_block(UID id, block_datastr *ptr);
+int get_blocksize(block_datastr *ptr);
+int get_datasize(char *data);
 
