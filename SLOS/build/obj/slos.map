@@ -20,7 +20,7 @@ ublkdev_task1       0x4               task1_start.o
 segment             0x8               segment_driver.o
 useg                0x4               task2_start.o
 command_line        0x100             cli_com.o
-bcb                 0x10              ddf_io.o
+bcb                 0x10              swi_handler.o
 blkdev_task1        0x4               task1_start.o
 error_buff          0x4               cli_com.o
 FileManager         0x18000           system_kernel.o
@@ -36,7 +36,7 @@ Linker script and memory map
                 0xa00c0000                . = 0xa00c0000
                 0xa00c0000                . = ALIGN (0x4)
 
-.text           0xa00c0000     0x4488
+.text           0xa00c0000     0x43fc
  *(.text)
  .text          0xa00c0000       0x44 start.o
                 0xa00c0000                _mainCRTStartup
@@ -142,300 +142,301 @@ Linker script and memory map
                 0xa00c0dc0                segment_open
                 0xa00c0efc                segment_write_byte
                 0xa00c0d80                segment_init
- .text          0xa00c0fb0      0x394 blkdev_driver.o
-                0xa00c11d4                blkdev_free_block
+ .text          0xa00c0fb0      0x398 blkdev_driver.o
+                0xa00c11d8                blkdev_free_block
                 0xa00c1074                blkdev_write_block
                 0xa00c1024                blkdev_close
-                0xa00c12cc                get_blockdatasize
-                0xa00c12a4                get_datasize
+                0xa00c12d0                get_blockdatasize
+                0xa00c12a8                get_datasize
                 0xa00c1048                find_freeblock
-                0xa00c1178                free_block
-                0xa00c1300                get_blocksize
-                0xa00c11f8                blkdev_read_block
+                0xa00c117c                free_block
+                0xa00c1304                get_blocksize
+                0xa00c11fc                blkdev_read_block
                 0xa00c0fe0                blkdev_open
                 0xa00c0fb0                blkdev_init
- .text          0xa00c1344       0x38 mutex.o
-                0xa00c1344                mutex_gatelock
-                0xa00c1364                mutex_gateunlock
- .text          0xa00c137c       0xec cinit.o
-                0xa00c137c                cinit_init
-                0xa00c13e0                C_Entry
- .text          0xa00c1468      0x394 cli_com.o
-                0xa00c17e8                CLI
-                0xa00c1590                writeHex
-                0xa00c1498                reportC
-                0xa00c178c                reportError
-                0xa00c15c8                prettyC
-                0xa00c15ac                writeDec
-                0xa00c1674                formatString
-                0xa00c14b0                internal_write_dec
-                0xa00c1570                newLine
-                0xa00c177c                handleReportedError
-                0xa00c1468                writeC
-                0xa00c1480                readC
-                0xa00c1644                prettyPrint
-                0xa00c1784                reportOK
-                0xa00c1540                write0
-                0xa00c1500                internal_write_hex
- .text          0xa00c17fc      0x448 cli_readline.o
-                0xa00c19ec                ReadLineZ
-                0xa00c17fc                xstrlen
-                0xa00c1824                xstrcpy
-                0xa00c1a5c                readLine
-                0xa00c1838                xmemmove
- .text          0xa00c1c44       0x64 cli_shell.o
-                0xa00c1c44                shell
- .text          0xa00c1ca8      0x138 cli_serial.o
-                0xa00c1da0                closeHost
-                0xa00c1d70                readCharFromHost
-                0xa00c1d0c                writeCharToHost
-                0xa00c1ca8                openHost
-                0xa00c1d3c                printToHost
- .text          0xa00c1de0       0x18 uid.o
-                0xa00c1de0                uid_generate
- .text          0xa00c1df8       0xcc task1_start.o
-                0xa00c1df8                openBLKDEV
-                0xa00c1ebc                C_EntryTask1
-                0xa00c1e8c                readBLKDEV
-                0xa00c1e48                writeBLKDEV
- .text          0xa00c1ec4      0x128 task2_start.o
-                0xa00c1f10                closeSEGMENT
-                0xa00c1f64                C_EntryTask2
-                0xa00c1f34                writeSEGMENT
-                0xa00c1ec4                openSEGMENT
- .text          0xa00c1fec       0x9c task3_start.o
-                0xa00c2048                C_EntryTask3
-                0xa00c1fec                banner
- .text          0xa00c2088       0x2c debug.o
-                0xa00c2094                debug_led_test
- .text          0xa00c20b4      0x108 serial.o
-                0xa00c2188                PutString
-                0xa00c2144                PutChar
-                0xa00c20b4                SerialInit
- .text          0xa00c21bc      0xb84 lib.o
-                0xa00c25b0                PrintDec
-                0xa00c21bc                MemCpy32
-                0xa00c2a3c                printf
-                0xa00c27b0                PrintHex
-                0xa00c224c                MemCmp
-                0xa00c2c0c                ClearLine
-                0xa00c247c                StrToInt
-                0xa00c2208                MemCpy
-                0xa00c2584                MOD
-                0xa00c236c                HexToInt
-                0xa00c2c28                StrTok
-                0xa00c2228                MemSet
-                0xa00c22c8                StrLen
-                0xa00c29fc                PrintString
-                0xa00c2594                DEV
-                0xa00c2568                PrintChar
-                0xa00c2be8                Power
-                0xa00c2324                StrNCmp
-                0xa00c22a0                StrCmp
-                0xa00c2c90                StrSpn
-                0xa00c2b7c                DecToLong
-                0xa00c2cf4                StrpBrk
-                0xa00c22f8                StrCpy
- .text          0xa00c2d40      0x9bc system_kernel.o
-                0xa00c2d40                FileManager_Initialize
-                0xa00c35f4                ParsePath
-                0xa00c349c                LoadDirectoryStructure
-                0xa00c314c                setHeader
-                0xa00c326c                CopyiNodeWithName
-                0xa00c3354                FindFolderWithPath
-                0xa00c2f14                RemoveFile
-                0xa00c3494                FindInsideDirectory
-                0xa00c2d8c                SearchEmptyFileManager
-                0xa00c34a4                CreateFile
-                0xa00c304c                RemoveDirectory
-                0xa00c3184                SearchWithName
-                0xa00c320c                SearchNameWithCurrentiNode
-                0xa00c3334                SearchFileWithName
-                0xa00c32c0                RemoveiNodeWithName
-                0xa00c2dc8                CreateDirectory
- .text          0xa00c36fc       0x8c file_structure.o
-                0xa00c371c                FileStructure_SetDirectoryWithName
-                0xa00c36fc                FileStruct_Initialize
-                0xa00c3760                FileStructure_SetFile
- .text          0xa00c3788      0xa6c cmd_program.o
-                0xa00c3b60                cmd_rm
-                0xa00c4128                SuperBlock_PrintTree
-                0xa00c3afc                cmd_mkdir
-                0xa00c3f40                cmd_cp
-                0xa00c40f8                cmd_usage
-                0xa00c3798                seperate_cmd
-                0xa00c3ab4                directoryStack_Clear
-                0xa00c3aa4                getDirectoryStack
-                0xa00c3a00                PrintFiles
-                0xa00c3840                parse_cmd
-                0xa00c3b78                cmd_fc
-                0xa00c409c                cmd_tree
-                0xa00c3eb4                cmd_mv
-                0xa00c3e10                cmd_cd
-                0xa00c3a88                getTopDirectoryStack
-                0xa00c3b30                cmd_ls
-                0xa00c3788                DIRCountValueSet_init
-                0xa00c3cfc                MoveDirectory
-                0xa00c3b48                cmd_rmdir
- .text          0xa00c41f4       0xd8 file_system.o
-                0xa00c42b4                directoryPath
-                0xa00c41f4                file_system_start
-                0xa00c4258                Initialize
- .text          0xa00c42cc      0x194 iNode.o
-                0xa00c4380                iNode_getName
-                0xa00c4378                iNode_SetSuperBlock
-                0xa00c4448                iNode_SetPhysicalAddress
-                0xa00c42cc                iNode_Initialize
-                0xa00c4364                iNode_SetFile
-                0xa00c43bc                iNode_FindHeadNode
-                0xa00c43f0                iNode_Release
-                0xa00c43c4                iNode_AddShibling
-                0xa00c4350                iNode_SetDirectory
-                0xa00c431c                iNode_SetDirectoryWithSuperBlock
- .text          0xa00c4460       0x28 block_init.o
-                0xa00c4460                block_init
+ .text          0xa00c1348       0x38 mutex.o
+                0xa00c1348                mutex_gatelock
+                0xa00c1368                mutex_gateunlock
+ .text          0xa00c1380       0xec cinit.o
+                0xa00c1380                cinit_init
+                0xa00c13e4                C_Entry
+ .text          0xa00c146c      0x394 cli_com.o
+                0xa00c17ec                CLI
+                0xa00c1594                writeHex
+                0xa00c149c                reportC
+                0xa00c1790                reportError
+                0xa00c15cc                prettyC
+                0xa00c15b0                writeDec
+                0xa00c1678                formatString
+                0xa00c14b4                internal_write_dec
+                0xa00c1574                newLine
+                0xa00c1780                handleReportedError
+                0xa00c146c                writeC
+                0xa00c1484                readC
+                0xa00c1648                prettyPrint
+                0xa00c1788                reportOK
+                0xa00c1544                write0
+                0xa00c1504                internal_write_hex
+ .text          0xa00c1800      0x448 cli_readline.o
+                0xa00c19f0                ReadLineZ
+                0xa00c1800                xstrlen
+                0xa00c1828                xstrcpy
+                0xa00c1a60                readLine
+                0xa00c183c                xmemmove
+ .text          0xa00c1c48       0x64 cli_shell.o
+                0xa00c1c48                shell
+ .text          0xa00c1cac      0x138 cli_serial.o
+                0xa00c1da4                closeHost
+                0xa00c1d74                readCharFromHost
+                0xa00c1d10                writeCharToHost
+                0xa00c1cac                openHost
+                0xa00c1d40                printToHost
+ .text          0xa00c1de4       0x18 uid.o
+                0xa00c1de4                uid_generate
+ .text          0xa00c1dfc       0xcc task1_start.o
+                0xa00c1dfc                openBLKDEV
+                0xa00c1ec0                C_EntryTask1
+                0xa00c1e90                readBLKDEV
+                0xa00c1e4c                writeBLKDEV
+ .text          0xa00c1ec8      0x128 task2_start.o
+                0xa00c1f14                closeSEGMENT
+                0xa00c1f68                C_EntryTask2
+                0xa00c1f38                writeSEGMENT
+                0xa00c1ec8                openSEGMENT
+ .text          0xa00c1ff0       0x9c task3_start.o
+                0xa00c204c                C_EntryTask3
+                0xa00c1ff0                banner
+ .text          0xa00c208c       0x2c debug.o
+                0xa00c2098                debug_led_test
+ .text          0xa00c20b8      0x108 serial.o
+                0xa00c218c                PutString
+                0xa00c2148                PutChar
+                0xa00c20b8                SerialInit
+ .text          0xa00c21c0      0xb84 lib.o
+                0xa00c25b4                PrintDec
+                0xa00c21c0                MemCpy32
+                0xa00c2a40                printf
+                0xa00c27b4                PrintHex
+                0xa00c2250                MemCmp
+                0xa00c2c10                ClearLine
+                0xa00c2480                StrToInt
+                0xa00c220c                MemCpy
+                0xa00c2588                MOD
+                0xa00c2370                HexToInt
+                0xa00c2c2c                StrTok
+                0xa00c222c                MemSet
+                0xa00c22cc                StrLen
+                0xa00c2a00                PrintString
+                0xa00c2598                DEV
+                0xa00c256c                PrintChar
+                0xa00c2bec                Power
+                0xa00c2328                StrNCmp
+                0xa00c22a4                StrCmp
+                0xa00c2c94                StrSpn
+                0xa00c2b80                DecToLong
+                0xa00c2cf8                StrpBrk
+                0xa00c22fc                StrCpy
+ .text          0xa00c2d44      0x8f0 system_kernel.o
+                0xa00c2d44                FileManager_Initialize
+                0xa00c3548                ParsePath
+                0xa00c344c                LoadDirectoryStructure
+                0xa00c30f4                setHeader
+                0xa00c3244                CopyiNodeWithName
+                0xa00c3198                ReadFile
+                0xa00c332c                FindFolderWithPath
+                0xa00c2ed4                RemoveFile
+                0xa00c3444                FindInsideDirectory
+                0xa00c2d84                SearchEmptyFileManager
+                0xa00c3454                CreateFile
+                0xa00c2ff4                RemoveDirectory
+                0xa00c312c                SearchWithName
+                0xa00c31f0                SearchNameWithCurrentiNode
+                0xa00c330c                SearchFileWithName
+                0xa00c3298                RemoveiNodeWithName
+                0xa00c2dc0                CreateDirectory
+ .text          0xa00c3634       0x8c file_structure.o
+                0xa00c3654                FileStructure_SetDirectoryWithName
+                0xa00c3634                FileStruct_Initialize
+                0xa00c3698                FileStructure_SetFile
+ .text          0xa00c36c0      0xab4 cmd_program.o
+                0xa00c3b44                cmd_rm
+                0xa00c40a8                SuperBlock_PrintTree
+                0xa00c3a48                cmd_mkdir
+                0xa00c3a7c                cmd_cat
+                0xa00c3edc                cmd_cp
+                0xa00c4078                cmd_usage
+                0xa00c36d0                seperate_cmd
+                0xa00c3a00                directoryStack_Clear
+                0xa00c39f0                getDirectoryStack
+                0xa00c394c                PrintFiles
+                0xa00c3754                parse_cmd
+                0xa00c3b5c                cmd_fc
+                0xa00c3a98                cmd_ll
+                0xa00c401c                cmd_tree
+                0xa00c3e50                cmd_mv
+                0xa00c3dac                cmd_cd
+                0xa00c39d4                getTopDirectoryStack
+                0xa00c3a64                cmd_ls
+                0xa00c36c0                DIRCountValueSet_init
+                0xa00c3cbc                MoveDirectory
+                0xa00c3b2c                cmd_rmdir
+ .text          0xa00c4174       0xcc file_system.o
+                0xa00c4228                directoryPath
+                0xa00c4174                file_system_start
+                0xa00c41d8                Initialize
+ .text          0xa00c4240      0x194 iNode.o
+                0xa00c42f4                iNode_getName
+                0xa00c42ec                iNode_SetSuperBlock
+                0xa00c43bc                iNode_SetPhysicalAddress
+                0xa00c4240                iNode_Initialize
+                0xa00c42d8                iNode_SetFile
+                0xa00c4330                iNode_FindHeadNode
+                0xa00c4364                iNode_Release
+                0xa00c4338                iNode_AddShibling
+                0xa00c42c4                iNode_SetDirectory
+                0xa00c4290                iNode_SetDirectoryWithSuperBlock
+ .text          0xa00c43d4       0x28 block_init.o
+                0xa00c43d4                block_init
 
-.glue_7         0xa00c4488        0x0
+.glue_7         0xa00c43fc        0x0
 
-.glue_7t        0xa00c4488        0x0
-                0xa00c4488                . = ALIGN (0x4)
+.glue_7t        0xa00c43fc        0x0
+                0xa00c43fc                . = ALIGN (0x4)
 
-.rodata         0xa00c4488       0x14
+.rodata         0xa00c43fc       0x14
  *(.rodata)
- .rodata        0xa00c4488       0x14 cli_com.o
-                0xa00c4488                digits
+ .rodata        0xa00c43fc       0x14 cli_com.o
+                0xa00c43fc                digits
 
-.rodata.str1.4  0xa00c449c      0x84a
+.rodata.str1.4  0xa00c4410      0x606
  .rodata.str1.4
-                0xa00c449c       0x26 swiapi.o
+                0xa00c4410       0x26 swiapi.o
                                  0x30 (size before relaxing)
- *fill*         0xa00c44c2        0x2 00
+ *fill*         0xa00c4436        0x2 00
  .rodata.str1.4
-                0xa00c44c4       0x6d blkdev_driver.o
-                                 0x70 (size before relaxing)
- *fill*         0xa00c4531        0x3 00
+                0xa00c4438       0x8d blkdev_driver.o
+                                 0x90 (size before relaxing)
+ *fill*         0xa00c44c5        0x3 00
  .rodata.str1.4
-                0xa00c4534        0x8 cli_readline.o
+                0xa00c44c8        0x8 cli_readline.o
  .rodata.str1.4
-                0xa00c453c       0x19 cli_shell.o
+                0xa00c44d0       0x19 cli_shell.o
                                  0x1c (size before relaxing)
- *fill*         0xa00c4555        0x3 00
+ *fill*         0xa00c44e9        0x3 00
  .rodata.str1.4
-                0xa00c4558       0x12 task1_start.o
+                0xa00c44ec       0x12 task1_start.o
                                  0x14 (size before relaxing)
- *fill*         0xa00c456a        0x2 00
+ *fill*         0xa00c44fe        0x2 00
  .rodata.str1.4
-                0xa00c456c       0x75 task3_start.o
+                0xa00c4500       0x75 task3_start.o
                                  0x78 (size before relaxing)
- *fill*         0xa00c45e1        0x3 00
+ *fill*         0xa00c4575        0x3 00
  .rodata.str1.4
-                0xa00c45e4       0x45 lib.o
+                0xa00c4578       0x45 lib.o
                                  0x48 (size before relaxing)
- *fill*         0xa00c4629        0x3 00
+ *fill*         0xa00c45bd        0x3 00
  .rodata.str1.4
-                0xa00c462c      0x387 system_kernel.o
-                                0x388 (size before relaxing)
- *fill*         0xa00c49b3        0x1 00
+                0xa00c45c0      0x1b3 system_kernel.o
+                                0x1b4 (size before relaxing)
+ *fill*         0xa00c4773        0x1 00
  .rodata.str1.4
-                0xa00c49b4      0x265 cmd_program.o
-                                0x270 (size before relaxing)
- *fill*         0xa00c4c19        0x3 00
+                0xa00c4774      0x1fd cmd_program.o
+                                0x208 (size before relaxing)
+ *fill*         0xa00c4971        0x3 00
  .rodata.str1.4
-                0xa00c4c1c       0xb5 file_system.o
-                                 0xb8 (size before relaxing)
- *fill*         0xa00c4cd1        0x3 00
+                0xa00c4974       0x90 file_system.o
  .rodata.str1.4
-                0xa00c4cd4       0x12 iNode.o
+                0xa00c4a04       0x12 iNode.o
                                  0x1c (size before relaxing)
-                0xa00c4ce8                . = ALIGN (0x4)
+                0xa00c4a18                . = ALIGN (0x4)
 
-.data           0xa00c4ce8      0x130
+.data           0xa00c4a18      0x130
  *(.data)
- .data          0xa00c4ce8       0xc8 ddf_io.o
-                0xa00c4ce8                devices
- .data          0xa00c4db0        0x4 mutex.o
-                0xa00c4db0                semaphore
- .data          0xa00c4db4        0x4 uid.o
-                0xa00c4db4                new_uid
- .data          0xa00c4db8        0x4 system_kernel.o
-                0xa00c4db8                header
- .data          0xa00c4dbc       0x5c cmd_program.o
-                0xa00c4dc0                nameSet
-                0xa00c4dbc                stackIndex
-                0xa00c4e18                . = ALIGN (0x4)
+ .data          0xa00c4a18       0xc8 ddf_io.o
+                0xa00c4a18                devices
+ .data          0xa00c4ae0        0x4 mutex.o
+                0xa00c4ae0                semaphore
+ .data          0xa00c4ae4        0x4 uid.o
+                0xa00c4ae4                new_uid
+ .data          0xa00c4ae8        0x4 system_kernel.o
+                0xa00c4ae8                header
+ .data          0xa00c4aec       0x5c cmd_program.o
+                0xa00c4af0                nameSet
+                0xa00c4aec                stackIndex
+                0xa00c4b48                . = ALIGN (0x4)
 
 .got
  *(.got)
-                0xa00c4e18                . = ALIGN (0x4)
+                0xa00c4b48                . = ALIGN (0x4)
 
-.bss            0xa00c4e20   0x118500
+.bss            0xa00c4b60   0x118500
  *(.bss)
- .bss           0xa00c4e20   0x100000 blkdev_driver.o
- .bss           0xa01c4e20        0x4 cli_com.o
- *fill*         0xa01c4e24       0x1c 00
- COMMON         0xa01c4e40       0x10 swiapi.o
+ .bss           0xa00c4b60   0x100000 blkdev_driver.o
+ .bss           0xa01c4b60        0x4 cli_com.o
+ *fill*         0xa01c4b64       0x1c 00
+ COMMON         0xa01c4b80       0x10 swiapi.o
                                   0x0 (size before relaxing)
-                0xa01c4e40                rs
- *fill*         0xa01c4e50       0x10 00
- COMMON         0xa01c4e60       0x24 button_service.o
+                0xa01c4b80                rs
+ *fill*         0xa01c4b90       0x10 00
+ COMMON         0xa01c4ba0       0x10 swi_handler.o
                                   0x0 (size before relaxing)
-                0xa01c4e60                ledUID
-                0xa01c4e80                ledNode
- *fill*         0xa01c4e84       0x1c 00
- COMMON         0xa01c4ea0        0x4 tick_service.o
+                0xa01c4ba0                bcb
+ *fill*         0xa01c4bb0       0x10 00
+ COMMON         0xa01c4bc0       0x24 button_service.o
                                   0x0 (size before relaxing)
-                0xa01c4ea0                countdown
- *fill*         0xa01c4ea4       0x1c 00
- COMMON         0xa01c4ec0       0x10 ddf_io.o
+                0xa01c4bc0                ledUID
+                0xa01c4be0                ledNode
+ *fill*         0xa01c4be4       0x1c 00
+ COMMON         0xa01c4c00        0x4 tick_service.o
                                   0x0 (size before relaxing)
-                0xa01c4ec0                bcb
- *fill*         0xa01c4ed0       0x10 00
- COMMON         0xa01c4ee0        0x8 led_driver.o
+                0xa01c4c00                countdown
+ *fill*         0xa01c4c04       0x1c 00
+ COMMON         0xa01c4c20        0x8 led_driver.o
                                   0x0 (size before relaxing)
-                0xa01c4ee0                device_led
- *fill*         0xa01c4ee8       0x18 00
- COMMON         0xa01c4f00        0x4 serial_driver.o
+                0xa01c4c20                device_led
+ *fill*         0xa01c4c28       0x18 00
+ COMMON         0xa01c4c40        0x4 serial_driver.o
                                   0x0 (size before relaxing)
-                0xa01c4f00                node
+                0xa01c4c40                node
+ *fill*         0xa01c4c44       0x1c 00
+ COMMON         0xa01c4c60        0x8 segment_driver.o
+                                  0x0 (size before relaxing)
+                0xa01c4c60                segment
+ *fill*         0xa01c4c68       0x18 00
+ COMMON         0xa01c4c80        0x4 cinit.o
+                                  0x0 (size before relaxing)
+                0xa01c4c80                STATE
+ *fill*         0xa01c4c84       0x1c 00
+ COMMON         0xa01c4ca0      0x224 cli_com.o
+                                  0x0 (size before relaxing)
+                0xa01c4ca0                gpbuff
+                0xa01c4da0                report_buff
+                0xa01c4da8                command_line
+                0xa01c4ec0                error_buff
+ *fill*         0xa01c4ec4       0x1c 00
+ COMMON         0xa01c4ee0       0x24 cli_serial.o
+                                  0x0 (size before relaxing)
+                0xa01c4ee0                host
+                0xa01c4f00                serial
  *fill*         0xa01c4f04       0x1c 00
- COMMON         0xa01c4f20        0x8 segment_driver.o
+ COMMON         0xa01c4f20       0x24 task1_start.o
                                   0x0 (size before relaxing)
-                0xa01c4f20                segment
- *fill*         0xa01c4f28       0x18 00
- COMMON         0xa01c4f40        0x4 cinit.o
-                                  0x0 (size before relaxing)
-                0xa01c4f40                STATE
+                0xa01c4f20                ublkdev_task1
+                0xa01c4f40                blkdev_task1
  *fill*         0xa01c4f44       0x1c 00
- COMMON         0xa01c4f60      0x224 cli_com.o
+ COMMON         0xa01c4f60       0x24 task2_start.o
                                   0x0 (size before relaxing)
-                0xa01c4f60                gpbuff
-                0xa01c5060                report_buff
-                0xa01c5068                command_line
-                0xa01c5180                error_buff
- *fill*         0xa01c5184       0x1c 00
- COMMON         0xa01c51a0       0x24 cli_serial.o
+                0xa01c4f60                seg
+                0xa01c4f80                useg
+ *fill*         0xa01c4f84       0x1c 00
+ COMMON         0xa01c4fa0    0x18040 system_kernel.o
                                   0x0 (size before relaxing)
-                0xa01c51a0                host
-                0xa01c51c0                serial
- *fill*         0xa01c51c4       0x1c 00
- COMMON         0xa01c51e0       0x24 task1_start.o
+                0xa01c4fa0                blkdev
+                0xa01c4fc0                ublkdev
+                0xa01c4fe0                FileManager
+ COMMON         0xa01dcfe0       0x80 cmd_program.o
                                   0x0 (size before relaxing)
-                0xa01c51e0                ublkdev_task1
-                0xa01c5200                blkdev_task1
- *fill*         0xa01c5204       0x1c 00
- COMMON         0xa01c5220       0x24 task2_start.o
-                                  0x0 (size before relaxing)
-                0xa01c5220                seg
-                0xa01c5240                useg
- *fill*         0xa01c5244       0x1c 00
- COMMON         0xa01c5260    0x18040 system_kernel.o
-                                  0x0 (size before relaxing)
-                0xa01c5260                blkdev
-                0xa01c5280                ublkdev
-                0xa01c52a0                FileManager
- COMMON         0xa01dd2a0       0x80 cmd_program.o
-                                  0x0 (size before relaxing)
-                0xa01dd2a0                directoryStack
+                0xa01dcfe0                directoryStack
 LOAD start.o
 LOAD init.o
 LOAD pcb.o
