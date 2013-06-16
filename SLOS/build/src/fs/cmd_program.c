@@ -130,11 +130,11 @@ void PrintFiles ()
 
 	for (;curNode;curNode = (struct iNode*)curNode->shibling) {
 		if (curNode->flag != iNODE_FLAG_MASTER_BLOCK) {
-			if ( curNode->flag == iNODE_FLAG_DIRECTORY 
-					|| curNode->flag == iNODE_FLAG_NON_DIRECTORY) {
-
+			if ( curNode->flag == iNODE_FLAG_DIRECTORY )
 				printf ( " %s/\t", curNode->File_Struct.name );
-			}
+			else if ( curNode->flag == iNODE_FLAG_NON_DIRECTORY ) 
+				printf ( " %s\t", curNode->File_Struct.name );
+			
 		}
 	}
 
@@ -238,7 +238,7 @@ boolean MoveDirectory ( char * msg_ ) {
 			msg_++;
 			
 			curNode = SearchNameWithCurrentiNode ( aNode, aDir );
-			if ( curNode ) 
+			if ( curNode && curNode->flag == iNODE_FLAG_DIRECTORY ) 
 			{
 				directoryStack[stackIndex++] = (unsigned int)curNode;
 				aNode = curNode;
