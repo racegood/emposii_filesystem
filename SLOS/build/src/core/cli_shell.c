@@ -91,12 +91,16 @@ void shell(void)
 	CallBack cb;
 	int len;
 
+	file_system_start();
+
+	MemSet( command_line, '\0', 255);
 	do 
 	{
 		len = readLine("EMPOSII-SLOS: ", command_line, 255);
 	//	cb = CLI(command_line);
 	//	if( (cb = parse_cmd(command_line)) == -1)	break;
 		cb = parse_cmd(command_line);
-	} while (cb);
+		printf("cb : %d\n", cb);
+	} while (cb != -1);
 }
 

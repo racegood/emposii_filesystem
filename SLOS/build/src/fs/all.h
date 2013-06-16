@@ -18,6 +18,12 @@
 /* Standard Library */
 #include "../serial/serial.h"
 #include "../core/all.h"
+#include "../headers/api_types.h"
+#include "../devices/ddf_io.h"
+#include "../e7t/devices/ddf_types.h"
+#include "../e7t/events/swis.h"
+#include "../headers/api_device.h"
+
 /* User Define Library */
 
 /***********************
@@ -29,7 +35,7 @@
 #define nil					0x0
 #define boolean				char
 #define Addr				unsigned int
-#define Max_Size			256
+#define Max_Size			2048
 #define Max_Length			32
 
 /**************************
@@ -40,6 +46,8 @@
  *    Static Value     *
  ***********************/
 
+device_treestr *blkdev;
+UID  ublkdev;
 /**********************
  *  Function List     *
  **********************/

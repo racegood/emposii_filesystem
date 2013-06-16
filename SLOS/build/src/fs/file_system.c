@@ -43,8 +43,8 @@ char * directoryPath () ;
  */
 int file_system_start ()
 {
-	char buf[1024];//{0};
-	int count=0;
+	//char buf[1024];//{0};
+	//int count=0;
 
 	// Initialize
 	if ( !Initialize() ) {
@@ -54,6 +54,7 @@ int file_system_start ()
 	}
 
 
+/*
 	do {
 		count=0;
 		// Input Instruction;
@@ -67,6 +68,12 @@ int file_system_start ()
 	} while ( 1 );
 
 	printf ( " ...Program terminate... \n");
+*/
+
+	// open block device
+	blkdev = eventIODeviceOpen(&blkdev, DEVICE_BLOCK_EMPOSII,1);
+	ublkdev = blkdev->uid;
+
 	return 0;
 }
 

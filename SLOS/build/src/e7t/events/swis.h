@@ -96,6 +96,7 @@
 #define Event_IODeviceReadBit      Event_IODeviceInit+6	
 #define Event_IODeviceWriteBlock   Event_IODeviceInit+7
 #define Event_IODeviceReadBlock    Event_IODeviceInit+8
+#define Event_ReadDataSize		   Event_IODeviceInit+9
 
 /* ------------------------------------------------------------ 
  * Bring up SWI's

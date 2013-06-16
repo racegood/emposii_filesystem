@@ -31,6 +31,12 @@
  ***********************/
 unsigned int	directoryStack[32];	/* Shall */
 int				stackIndex = -1;			/* Shall */
+char			nameSet[][8] = {
+		"name1", 	"name2",	"name3",	"name4",	"name5",
+		"name6",	"name7",	"name8",	"name9",	"name10",
+		NULL
+};
+
 
 /**********************
  *  Function List     *
@@ -49,6 +55,25 @@ void DIRCountValueSet_init ( struct DIRCountValueSet * aSet)
 	aSet->other = 0;
 }
 
+boolean seperate_cmd ( char * cmd_, char ** arr_ ) 
+{	// arr_ 's Size - 4 
+	int	cmd_count = 0;
+	printf ( "Seperate_cmd Start = [%s] \n\n", cmd_ );
+	while ( (*cmd_) != '\0' )
+	{
+		while((*cmd_) == ' ') cmd_++;
+		arr_[cmd_count] = cmd_;
+
+		while(((*cmd_) >= '0' && (*cmd_) <= 'z') || (*cmd_) == '.' || (*cmd_) == '/' ) cmd_++;
+		(*cmd_) = '\0';
+
+		cmd_count++;
+		cmd_++;
+
+	}
+	return true;
+}
+
 /*
  * --------  Function 
  * -- Name : 
@@ -58,51 +83,41 @@ void DIRCountValueSet_init ( struct DIRCountValueSet * aSet)
  */
 boolean parse_cmd (   char * msg_ ) 
 {
-	char cmd[Max_Length*4];// {'\n'};
-	char * cur_cmd_PTR = cmd;
-	char* buf = (char*)msg_;
-	int i=0,cmd_Count=1;
+	char *cmd_array[4];
 
-	// msg를 분리합시다. 
-	while ( (*buf) != '\0' ) {
+	seperate_cmd ( msg_, cmd_array );
 
-		// 공백처리
-		while ( (*buf) == ' ' ) {buf++;}
 
-		for (;i<31 && (*buf) != '\0' && (*buf) != ' '; i++,buf++) {
-			cur_cmd_PTR[i]=(*buf);
-		}
-		cur_cmd_PTR[i]='\0';
-		
-		cur_cmd_PTR = cmd + ( cmd_Count * Max_Length ) - StrLen(cmd);
-		cmd_Count++;
-	}
-	if ( !StrCmp (cmd, "cd")) {
-		cur_cmd_PTR = cmd+Max_Length;
-		if ( debug ) printf ( "  - Directory is ==> [ %s ]\n", cur_cmd_PTR );
-		cmd_cd ( cmd+Max_Length );
+	if ( !StrCmp (cmd_array[0], "cd")) {
+		cmd_cd ( cmd_array[1] );
 		return true;
 	}
-	else if ( !StrCmp ( cmd, "tree") ) {
-		return cmd_tree( cmd+Max_Length );
+	else if ( !StrCmp ( cmd_array[0], "fc" ) ) {
+		return cmd_fc ( cmd_array[1], cmd_array[2]  );
 	}
-	else if ( !StrCmp ( cmd, "tree") ) {
-		return cmd_tree ( cmd+Max_Length );
+	else if ( !StrCmp ( cmd_array[0], "tree") ) {
+		return cmd_tree( cmd_array[1] );
 	}
-	else if ( !StrCmp(cmd, "ls") ) {
-		return cmd_ls ( cmd+Max_Length );
+	else if ( !StrCmp ( cmd_array[0], "tree") ) {
+		return cmd_tree ( cmd_array[1] );
 	}
-	else if ( !StrCmp (cmd, "rmdir") ) {
-		return cmd_rmdir ( cmd+Max_Length );
+	else if ( !StrCmp ( cmd_array[0], "ls") ) {
+		return cmd_ls ( cmd_array[1] );
 	}
-	else if ( !StrCmp(cmd, "exit")) {		// exit - 프로그램을 종료한다. 
+	else if ( !StrCmp ( cmd_array[0], "rmdir") ) {
+		return cmd_rmdir ( cmd_array[1] );
+	}
+	else if ( !StrCmp( cmd_array[0], "exit")) {		// exit - 프로그램을 종료한다. 
 		return -1;
 	}
-	else if ( !StrCmp(cmd, "mkdir")) {
-		return cmd_mkdir (cmd+Max_Length);
+	else if ( !StrCmp(cmd_array[0], "mkdir")) {
+		return cmd_mkdir (cmd_array[1]);
+	}
+	else if ( !StrCmp ( cmd_array[0], "mv" )) {
+		return cmd_mv	( cmd_array[1], cmd_array[2] );
 	}
 	else {
-		if ( debug ) printf( " - Command not Found [%s]\n",cmd );
+		if ( debug ) printf( " - Command not Found [%s]\n",cmd_array[0] );
 		return true;
 	}
 	return true;
@@ -115,12 +130,13 @@ void PrintFiles ()
 
 	for (;curNode;curNode = (struct iNode*)curNode->shibling) {
 		if (curNode->flag != iNODE_FLAG_MASTER_BLOCK) {
-			if ( curNode->flag == iNODE_FLAG_DIRECTORY ) {
+			if ( curNode->flag == iNODE_FLAG_DIRECTORY )
 				printf ( " %s/\t", curNode->File_Struct.name );
-			}
+			else if ( curNode->flag == iNODE_FLAG_NON_DIRECTORY ) 
+				printf ( " %s\t", curNode->File_Struct.name );
+			
 		}
 	}
-
 	printf ( "\n" );
 }
 unsigned int getTopDirectoryStack ()
@@ -163,36 +179,146 @@ boolean cmd_rmdir	(   char * msg_ )
 	return true;
 }
 
+boolean cmd_fc	( char * path_, char * count_ ) 
+{
+	int count = StrToInt ( count_ ), i=0, j=0;
+	char * filePath = "/";
+
+	// variable for block
+	char data[2000];
+	int size;
+	block_datastr *blk_datastr;
+
+	// Make File 
+	printf ( "%s, %s\n", path_, count_ );
+
+	// Path Check 
+	if ( !StrLen(path_) ) 
+	{
+		printf ( "\n Required Path, Path Not Commandded \n\n"  );
+		return false;
+	}
+	
+	
+	if ( count < 1 || count > 10 ) 
+	{
+		printf ( "\n Count Value Between 1 ~ 10 : %d\n\n", count ) ;
+		return false;
+	}
+
+	printf ( " -- File Creation Start \n\n" ); 
+
+	// make data '0'(48)~'z'(122)
+	for( i = 0; i < 2000; i++ )
+	{
+		if(j == 123)
+			j = 0;
+		data[i] = 48+j;
+		j++;
+	}
+	data[i] = EOF;
+
+	// get filesize
+	i = 0;
+	while(data[i] != EOF){
+		i++;
+	}
+	size = i;
+
+	for ( i = 0; i < count; i++ ) 
+	{
+		// block operation
+		blk_datastr = eventIODeviceWriteBlock(blkdev, ublkdev, data);
+		printf("size : %d, blk_datastr : %x\n", size, blk_datastr);
+		printf("%s , %d , %s\n", nameSet[i], i, filePath);
+		if ( ! CreateFile ( (unsigned int)blk_datastr, 		/* Physical Address */
+							nameSet[i],	/* File Name */
+							size,			/* File Size */
+							path_	/* File Path */ 
+							) ) 
+		{
+			printf ( " -- [Error] File Creation is Failed -- [%s] \n\n", nameSet[i] );
+		}
+							
+	}
+
+	return true;
+}
+
+boolean MoveDirectory ( char * msg_ ) { 
+	struct iNode * curNode=nil,*aNode = (struct iNode*)getTopDirectoryStack ();
+	int index =0;
+	char aDir[32];
+	printf ( "Move Directory [%s]\n", msg_);
+	if ( StrLen ( msg_ ) > 1 ) {
+		// Set directoryStack With Recursive
+		while ( StrLen(msg_) > 0 ) 
+		{
+			index=0;
+			MemSet ( aDir, '\0', 32 );
+
+			while ( (*msg_) != '/') {
+				if ((*msg_) == '\0')
+				   break;
+				aDir[index++] = (*msg_++);
+			}
+			aDir[index] = '\0';
+			printf ( "aDir [%s] \n", aDir );	
+
+			curNode = SearchNameWithCurrentiNode ( aNode, aDir );
+			if ( curNode && curNode->flag == iNODE_FLAG_DIRECTORY ) 
+			{
+				directoryStack[++stackIndex] = (unsigned int)curNode;
+				aNode = curNode;
+			} else {
+				return true;
+			}
+		}			
+		return true;
+	}
+	return false;
+}
+
 boolean cmd_cd (   char * msg_ ) 
 {
-	struct iNode * curNode = nil;
+	int index=0;
 
-	if ( !StrLen(msg_) ) {	// 아무것도 쓰지 않으면 루트로 이동
+	if ( !StrLen(msg_) || msg_[0] == '/' ) 
+	{	// 아무것도 쓰지 않으면 루트로 이동
 		directoryStack_Clear();
+		return MoveDirectory ( msg_+1 );
+	}
+
+	if ( !StrNCmp (msg_, "..", 2) ) 
+	{	// .. 의 케이스
+		if ( stackIndex > 0 )
+			directoryStack[stackIndex--] = nil;
 		return true;
 	}
 
-	if ( !StrNCmp (msg_, "..", 2) ) {	// .. 의 케이스
-		directoryStack[stackIndex--] = nil;
-		return true;
-	} else {
-		// Find Folder by Name 
-		curNode = (struct iNode *)directoryStack[stackIndex];
-		curNode = (struct iNode *)curNode->child;
+	index =	MoveDirectory ( msg_ );
+	// Can't Find Folder 
+	if ( !index ) printf(" [%s] Cannot found folder \n", msg_);
+	return true;
+}
 
-		for ( ; curNode; curNode = (struct iNode *)curNode->shibling ) {
-			if ( curNode->flag == iNODE_FLAG_DIRECTORY 
-				&& !StrCmp(curNode->File_Struct.name,msg_ ) ) {
-					// Add Stack
-					directoryStack[++stackIndex] = (unsigned int) curNode;
-					return true;
-			} 
-		}
-
-		// Can't Find Folder 
-		printf(" [%s] Cannot found folder \n", msg_);
-		return true;
+boolean cmd_mv	( char * name, char * destPath ) 
+{
+	struct iNode * aNode	= RemoveiNodeWithName ( (struct iNode *)directoryStack[stackIndex], name );
+	struct iNode * destNode	= FindFolderWithPath ( destPath );
+	
+	if ( !aNode ) 
+	{
+		printf ( " [%s] Directory is Not Found \n", name );
+		return false;
 	}
+
+	if ( !destNode ) 
+	{
+		printf ( " [%s] Destination Folder is Not Found \n", destPath );
+	}
+
+	return iNode_AddShibling ( destNode, aNode );
 }
 
 boolean cmd_tree	(   char * msg_ ) 

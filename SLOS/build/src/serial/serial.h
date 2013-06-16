@@ -5,8 +5,9 @@
 #include "lib.h"
 #include "reg.h"
 
+#endif
+
 extern void SerialInit(void);
 extern void PutChar(const char ch);
 extern void PutString(const char *ch);
 
-#endif

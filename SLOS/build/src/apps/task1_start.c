@@ -84,8 +84,8 @@
  * STATICS
  *****************************************************************************/
 
-device_treestr *blkdev;
-UID ublkdev;
+device_treestr *blkdev_task1;
+UID ublkdev_task1;
 
 /*****************************************************************************
  * ROTUINES
@@ -113,12 +113,12 @@ BOOL openBLKDEV(void)
 	 * --------------------------------------------------------------
 	 */
 
-	blkdev = eventIODeviceOpen(&blkdev,DEVICE_BLOCK_EMPOSII,1);
-	ublkdev = blkdev->uid;
+	blkdev_task1 = eventIODeviceOpen(&blkdev_task1,DEVICE_BLOCK_EMPOSII,1);
+	ublkdev_task1 = blkdev_task1->uid;
 
 	/* check the UID .................. */
 
-	switch (ublkdev) 
+	switch (ublkdev_task1) 
 	{
 		case DEVICE_IN_USE:
 		case DEVICE_UNKNOWN:
@@ -132,7 +132,7 @@ block_datastr *writeBLKDEV(UID uid, char* dat)
 {
 	block_datastr *blk_datastr = NULL;
 
-	blk_datastr = eventIODeviceWriteBlock(blkdev, uid, dat);
+	blk_datastr = eventIODeviceWriteBlock(blkdev_task1, uid, dat);
 	printf("blk_datastr : %x\n", blk_datastr);
 	return blk_datastr;
 }
@@ -140,7 +140,7 @@ block_datastr *writeBLKDEV(UID uid, char* dat)
 char *readBLKDEV(UID uid, block_datastr *blk_datastr)
 {
 	char *ret;
-	ret = eventIODeviceReadBlock(blkdev, ublkdev, blk_datastr);
+	ret = eventIODeviceReadBlock(blkdev_task1, ublkdev_task1, blk_datastr);
 	return ret;
 }
 
@@ -162,6 +162,7 @@ void C_EntryTask1(void)
 	char dat[2000];
 	block_datastr *blk_datastr;
 
+	/*
 	if(openBLKDEV() == TRUE)
 	{
 		printf("open blkdevice - uid[%d]\n",ublkdev);
@@ -174,10 +175,11 @@ void C_EntryTask1(void)
 			else
 				dat[i] = '1';
 		}
-		dat[i] = '\0';
+		dat[i] = EOF;
 		blk_datastr = writeBLKDEV(ublkdev, dat);
-		printf("%s\n", readBLKDEV(ublkdev, blk_datastr));
+		readBLKDEV(ublkdev, blk_datastr);
 	}
+	*/
 
 	/* 
 	 * error loop

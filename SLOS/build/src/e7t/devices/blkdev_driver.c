@@ -36,11 +36,6 @@ void blkdev_init(void)
 
 	unsigned int i;
 	
-	/*
-	for(i=BLOCK_INIT_PTR;i<BLOCK_END_PTR;i++)
-		__REG(i) = 0x0;
-		*/
-
 	bcb.n_blocks = BLOCK_NUM;
 	bcb.blocksleft = BLOCK_NUM;
 	bcb.blk = blk;
@@ -73,7 +68,7 @@ int blkdev_close(UID id)
 
 block_datastr *find_freeblock(void)
 {
-	block_datastr *ret = (block_datastr*)BLOCK_INIT_PTR;
+	block_datastr *ret = bcb.blk;
 	while(((unsigned int)(ret->next) & 0x1) != 0){
 		ret++;
 	}
@@ -92,10 +87,17 @@ block_datastr *blkdev_write_block(UID id,char *data)
 	int i=0;
 
 	ret = bp = find_freeblock();	 // get free block pointer
+	printf("%x\n", ret);
 
 	size = get_datasize(data); // get size of data
+	printf("%d\n", size);
 
 	while(size > 0){
+		if(bcb.blocksleft <= 0)
+		{
+			printf("No have empty block");
+			return NULL;
+		}
 		bp->next = (unsigned int)(bp->next)|(0x1);	// check block to be used
 		if(size > BLOCK_SIZE)
 		{
@@ -113,6 +115,28 @@ block_datastr *blkdev_write_block(UID id,char *data)
 
 
 	return ret;
+}
+
+int free_block(block_datastr *ptr)
+{
+	if((unsigned int)(ptr->next)&0xFFFFFFFE == 0)
+		return 0;
+	else
+	{
+		free_block(ptr->next);
+		ptr->next = NULL;
+		return 1;
+	}
+}
+
+void blkdev_free_block(UID id, block_datastr *ptr)
+{
+	int ret;
+	ret = free_block(ptr);
+	if(ret = 1)
+		printf("block free complete\n");
+	else
+		printf("[error] block free\n");
 }
 
 char *blkdev_read_block(UID id, block_datastr *ptr) 
@@ -150,7 +174,7 @@ int get_datasize(char *data)
 	int i=0;
 	char *ptr = data;
 
-	while(*ptr != NULL)
+	while(*ptr != EOF)
 	{
 		i++;
 		ptr++;
@@ -163,7 +187,7 @@ int get_blockdatasize(char *data)
 	int i=0;
 	char *ptr =data;
 
-	while(*ptr != NULL)
+	while(*ptr != EOF)
 	{
 		i++;
 		ptr++;

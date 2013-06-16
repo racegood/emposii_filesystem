@@ -54,6 +54,8 @@ boolean cmd_ls		(   char * msg_ ) ;
 boolean cmd_cd		(   char * msg_ ) ;
 boolean cmd_rmdir	(   char * msg_ ) ;
 boolean cmd_tree	(   char * msg_ ) ;
+boolean cmd_mv		( char *, char * );
+boolean cmd_fc		( char *, char * );
 void	PrintFiles ();
 boolean directoryStack_Clear ();
 unsigned int getTopDirectoryStack ();

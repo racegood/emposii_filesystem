@@ -68,6 +68,8 @@
  * - added uid generator
  *
  *****************************************************************************/
+#ifndef _H_DDFFRAME_
+#define _H_DDFFRAME_
 
 /*****************************************************************************
  * IMPORT
@@ -84,12 +86,16 @@
 /*****************************************************************************
  * DATATYPES
  *****************************************************************************/
+
+
 #define BLOCK_SIZE ((1<<10) - 4) // 4 byte for next ptr
+#define EOF			4			// end of file
 
 typedef struct block_struct{
 	char data[BLOCK_SIZE];
 	int *next;
 } block_datastr;
+
 
 typedef struct device_tree {
 
@@ -233,3 +239,4 @@ typedef struct device_tree {
 
 extern device_treestr devices[];
 
+#endif

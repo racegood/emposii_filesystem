@@ -65,6 +65,9 @@
  *
  *****************************************************************************/
 
+#ifndef _H_MACRO_
+#define _H_MACRO_
+
 /* Macro */
 #define __REG *(volatile unsigned char *)
 #define __REG8 *(volatile unsigned short *)
@@ -106,4 +109,5 @@
 
 #define IRQVector        0x18
 
+#endif
 
