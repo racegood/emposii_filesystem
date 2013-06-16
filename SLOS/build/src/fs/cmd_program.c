@@ -98,8 +98,8 @@ boolean parse_cmd (   char * msg_ )
 	else if ( !StrCmp ( cmd_array[0], "tree") ) {
 		return cmd_tree( cmd_array[1] );
 	}
-	else if ( !StrCmp ( cmd_array[0], "tree") ) {
-		return cmd_tree ( cmd_array[1] );
+	else if ( !StrCmp ( cmd_array[0], "rm") ) {
+		return cmd_rm ( cmd_array[1] );
 	}
 	else if ( !StrCmp ( cmd_array[0], "ls") ) {
 		return cmd_ls ( cmd_array[1] );
@@ -115,6 +115,9 @@ boolean parse_cmd (   char * msg_ )
 	}
 	else if ( !StrCmp ( cmd_array[0], "mv" )) {
 		return cmd_mv	( cmd_array[1], cmd_array[2] );
+	}
+	else if ( !StrCmp ( cmd_array[0], "cp" )) {
+		return cmd_cp	( cmd_array[1], cmd_array[2] );
 	}
 	else {
 		if ( debug ) printf( " - Command not Found [%s]\n",cmd_array[0] );
@@ -176,6 +179,12 @@ boolean cmd_ls (   char * msg_ )
 boolean cmd_rmdir	(   char * msg_ ) 
 {
 	RemoveDirectory(msg_);
+	return true;
+}
+
+boolean cmd_rm ( char * msg_ )
+{
+	RemoveFile ( msg_  );
 	return true;
 }
 
@@ -304,19 +313,77 @@ boolean cmd_cd (   char * msg_ )
 
 boolean cmd_mv	( char * name, char * destPath ) 
 {
-	struct iNode * aNode	= RemoveiNodeWithName ( (struct iNode *)directoryStack[stackIndex], name );
 	struct iNode * destNode	= FindFolderWithPath ( destPath );
-	
+	struct iNode * aNode	= nil;
+
+	if ( !destNode ) 
+	{
+		printf ( " [%s] Destination Folder is Not Found \n", destPath );
+	}
+
+	aNode	= RemoveiNodeWithName ( (struct iNode *)directoryStack[stackIndex], name );
+
 	if ( !aNode ) 
 	{
 		printf ( " [%s] Directory is Not Found \n", name );
 		return false;
 	}
 
-	if ( !destNode ) 
+	return iNode_AddShibling ( destNode, aNode );
+}
+
+boolean cmd_cp ( char* name, char * destPath )
+{
+    struct iNode * aNode = nil;
+    struct iNode * destNode = FindFolderWithPath ( destPath );
+	int i=0, j=0;
+	// variable for block
+	char data[2000];
+	int size;
+	block_datastr *blk_datastr;
+
+    if ( !destNode ) 
+    {   
+        printf ( " [%s] Destnation Folder is not Fount \n", destPath );
+	    return false;
+	}   
+	
+	if ( ! (aNode = CopyiNodeWithName ( (struct iNode *)getTopDirectoryStack (), name )) )
+	{   
+		printf ( " [%s] is not Found \n", name );
+		return false;
+	}   
+	
+	// CreateNewiNode
+	// make data '0'(48)~'z'(122)
+	for( i = 0; i < 2000; i++ )
 	{
-		printf ( " [%s] Destination Folder is Not Found \n", destPath );
+		if(j == 123)
+			j = 0;
+		data[i] = 48+j;
+		j++;
 	}
+	data[i] = EOF;
+
+	// get filesize
+	i = 0;
+	while(data[i] != EOF){
+		i++;
+	}
+	size = i;
+
+	// block operation
+	blk_datastr = eventIODeviceWriteBlock(blkdev, ublkdev, data);
+	printf("size : %d, blk_datastr : %x\n", size, blk_datastr);
+	if ( ! CreateFile ( (unsigned int)blk_datastr, 		/* Physical Address */
+				(aNode->File_Struct).name,	/* File Name */
+				size,			/* File Size */
+				destPath	/* File Path */ 
+				) ) 
+	{
+		printf ( " -- [Error] File Creation is Failed -- [%s] \n\n", (aNode->File_Struct).name );
+	}
+
 
 	return iNode_AddShibling ( destNode, aNode );
 }

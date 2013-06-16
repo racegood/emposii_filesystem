@@ -69,6 +69,52 @@ unsigned int CreateDirectory ( char * name_ )
 	return (unsigned int)newNode;
 }
 
+unsigned int RemoveFile ( char * name )
+{
+	struct iNode * aNode = nil;
+	struct iNode * tempNode = nil;
+
+	if ( !StrLen ( name ) ) 
+	{   
+        printf ( " ** [Error] Required Name \n" );
+        return nil;
+    }   
+
+	if ( header && !(aNode = SearchWithName ( name )) )
+    {   
+        printf ( " [Error] Not Exist This File [%s] \n\n", name );
+        return nil;
+    }   
+
+	aNode = (struct iNode*)directoryStack[stackIndex];
+	tempNode = aNode = (struct iNode*)aNode->child;
+	for ( ; aNode;
+			tempNode = aNode,
+			aNode = (struct iNode*)aNode->shibling ) { 
+		if ( aNode->flag == iNODE_FLAG_NON_DIRECTORY 
+				&& !StrCmp(aNode->File_Struct.name,name) ) { 
+
+			// tempNode : 이전 노드 
+			// aNode : 현제 노드 
+			tempNode->shibling = aNode->shibling;
+
+			// 메모리 반환 
+			return iNode_Release(aNode);
+		}
+		else if ( aNode->flag == iNODE_FLAG_DIRECTORY
+				&& !StrCmp ( aNode->File_Struct.name,name) )
+		{
+			printf ( "[%s] is a Directory \n\n", name  );
+			return nil;
+		}
+	}
+
+
+
+	return nil;
+}
+
+
 unsigned int RemoveDirectory ( char * name )
 {
 	struct iNode * aNode=nil;
@@ -95,6 +141,7 @@ unsigned int RemoveDirectory ( char * name )
 			// 해당 노드의 폴더 내 검사
 				// 실패 시 동작안함
 			if ( FindInsideDirectory(aNode) ) {
+				printf ( " [Error] Directory is Not Empty \n" ) ;
 				return nil;
 			}
 
@@ -149,7 +196,7 @@ struct iNode * SearchNameWithCurrentiNode ( struct iNode * aNode, char *name )
 	for ( ; curNode; curNode = (struct iNode *)curNode->shibling ) 
 	{
 		if ( curNode->flag != iNODE_FLAG_NOT_USED
-			&& curNode->flag != iNODE_FLAG_MASTER_BLOCK ) 
+				&& curNode->flag != iNODE_FLAG_MASTER_BLOCK ) 
 		{
 			if ( !StrCmp ( name, curNode->File_Struct.name ) )
 				return curNode;
@@ -158,15 +205,37 @@ struct iNode * SearchNameWithCurrentiNode ( struct iNode * aNode, char *name )
 	return nil;
 }
 
+struct iNode * CopyiNodeWithName ( struct iNode * aNode, char * name_ )
+{   
+	struct iNode * curNode = nil, *tempNode=nil;
+	curNode = (struct iNode *)aNode->child;
+
+	for ( ; curNode; curNode = (struct iNode*)curNode->shibling )
+	{   
+		if ( curNode->flag == iNODE_FLAG_NON_DIRECTORY )
+		{   
+			if ( !StrCmp ( name_, curNode->File_Struct.name ) ) 
+			{   
+				// Copy to tempNode From curNode;
+				return curNode;
+			}   
+		}   
+	}   
+	return nil;
+
+}
+
+
 struct iNode * RemoveiNodeWithName ( struct iNode * aNode, char * name_ )
 {
 	struct iNode * curNode = nil, *tempNode=nil;
 	curNode = (struct iNode *)aNode->child;
 
-	for ( ; curNode; curNode = (struct iNode*)curNode->shibling )
+	for ( ; curNode;
+			tempNode = curNode,
+			curNode = (struct iNode*)curNode->shibling)
 	{
-		if ( curNode->flag != iNODE_FLAG_NOT_USED
-			&& curNode->flag != iNODE_FLAG_MASTER_BLOCK ) 
+		if ( curNode->flag == iNODE_FLAG_NON_DIRECTORY )
 		{
 			if ( !StrCmp ( name_, curNode->File_Struct.name ) )
 			{

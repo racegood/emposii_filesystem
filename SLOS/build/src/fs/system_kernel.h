@@ -49,6 +49,7 @@ struct iNode * SearchEmptyFileManager ( ) ;
 boolean setHeader  ( ) ;
 struct iNode * SearchWithName ( char *name ) ;
 unsigned int RemoveDirectory ( char * name ) ;
+unsigned int RemoveFile		( char * );
 boolean FindInsideDirectory ( struct iNode * ) ;
 boolean LoadDirectoryStructure ( );
 struct iNode * SearchNameWithCurrentiNode ( struct iNode *, char * );
@@ -56,5 +57,6 @@ boolean SearchFileWithName ( char *, char* );
 struct iNode * FindFolderWithPath ( char * );
 struct iNode * ParsePath ( char*, struct iNode * );
 struct iNode * RemoveiNodeWithName ( struct iNode *, char * );
+struct iNode * CopyiNodeWithName ( struct iNode *, char *);
 boolean	MoveFile ( char * fileName, char * sPath, char* dPath );
 #endif
