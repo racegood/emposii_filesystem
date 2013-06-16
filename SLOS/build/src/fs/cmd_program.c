@@ -222,7 +222,7 @@ boolean MoveDirectory ( char * msg_ ) {
 	struct iNode * curNode=nil,*aNode = (struct iNode*)getTopDirectoryStack ();
 	int index =0;
 	char aDir[32];
-	printf ( "Move Directory \n");
+	printf ( "Move Directory [%s]\n", msg_);
 	if ( StrLen ( msg_ ) > 1 ) {
 		// Set directoryStack With Recursive
 		while ( StrLen(msg_) > 0 ) 
