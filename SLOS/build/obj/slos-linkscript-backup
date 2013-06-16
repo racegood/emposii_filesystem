@@ -3,7 +3,6 @@ OUTPUT_ARCH(arm)
 ENTRY(_start)
 SECTIONS
 {
-
 	. = 0xa00c0000;
 	. = ALIGN(4);
 	.text : { *(.text) }
@@ -16,18 +15,17 @@ SECTIONS
 	. = ALIGN(4);
 	.bss : { *(.bss) }
 
-	
-	. = 0xa0600000;
+	. = 0xa3900000;
 	. = ALIGN(4);
-	.cache : {
-		__scache = .;
-		. = . + 0x100000;
-		__ecache = .;
-	}
+	.ecache : {
+		. = _ecache;
+	   	*(.ecache) }
 
-	.block :{
-		__sblock = .;
-		. = . + 0x3900000;
-		__eblock = .;
-	}
+	. = 0xa4000000;
+	. = ALIGN(4);
+	.scache : {
+		. = _scache;
+	   	*(.scache) }
+	
+
 }
