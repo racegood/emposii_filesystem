@@ -229,23 +229,25 @@ boolean MoveDirectory ( char * msg_ ) {
 		{
 			index=0;
 			MemSet ( aDir, '\0', 32 );
+
 			while ( (*msg_) != '/') {
-				if ((*msg_) == '\0');break;
+				if ((*msg_) == '\0')
+				   break;
 				aDir[index++] = (*msg_++);
 			}
 			aDir[index] = '\0';
 			printf ( "aDir [%s] \n", aDir );	
-			msg_++;
-			
+
 			curNode = SearchNameWithCurrentiNode ( aNode, aDir );
 			if ( curNode && curNode->flag == iNODE_FLAG_DIRECTORY ) 
 			{
-				directoryStack[stackIndex++] = (unsigned int)curNode;
+				directoryStack[++stackIndex] = (unsigned int)curNode;
 				aNode = curNode;
 			} else {
 				return true;
 			}
 		}			
+		return true;
 	}
 	return false;
 }
