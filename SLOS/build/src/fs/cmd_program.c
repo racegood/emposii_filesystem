@@ -67,8 +67,6 @@ boolean seperate_cmd ( char * cmd_, unsigned int * arr_ )
 		while((*cmd_) >= '0' && (*cmd_) <= 'z') cmd_++;
 		(*cmd_) = '\0';
 
-		printf("%d - %s\n", cmd_count, arr_[cmd_count]);
-
 		cmd_count++;
 		cmd_++;
 
@@ -183,7 +181,7 @@ boolean cmd_rmdir	(   char * msg_ )
 boolean cmd_fc	( char * path_, char * count_ ) 
 {
 	int count = StrToInt ( count_ ), i=0;
-	char * filePath = "root";
+	char * filePath = "/";
 	// Make File 
 	printf ( "%s, %s\n", path_, count_ );
 
@@ -203,9 +201,10 @@ boolean cmd_fc	( char * path_, char * count_ )
 	printf ( " -- File Creation Start \n\n" ); 
 	for ( i = 0; i < count; i++ ) 
 	{
-		if ( ! CreateFile ( NULL, 		/* Physical Address */
+		printf("%s , %d , %s\n", nameSet[i], i, filePath);
+		if ( ! CreateFile ( 0x01, 		/* Physical Address */
 							nameSet[i],	/* File Name */
-							i,			/* File Size */
+							1000*(i+1),			/* File Size */
 							filePath	/* File Path */ 
 							) ) 
 		{
