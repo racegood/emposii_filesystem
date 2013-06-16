@@ -198,7 +198,7 @@ boolean cmd_fc	( char * path_, char * count_ )
 	char * filePath = "/";
 
 	// variable for block
-	char data[2000];
+	char data[4000];
 	int size;
 	block_datastr *blk_datastr;
 
@@ -222,7 +222,7 @@ boolean cmd_fc	( char * path_, char * count_ )
 	printf ( " -- File Creation Start \n\n" ); 
 
 	// make data '0'(48)~'z'(122)
-	for( i = 0; i < 2000; i++ )
+	for( i = 0; i < 4000; i++ )
 	{
 		if(j == 123)
 			j = 0;
@@ -242,8 +242,6 @@ boolean cmd_fc	( char * path_, char * count_ )
 	{
 		// block operation
 		blk_datastr = eventIODeviceWriteBlock(blkdev, ublkdev, data);
-		printf("size : %d, blk_datastr : %x\n", size, blk_datastr);
-		printf("%s , %d , %s\n", nameSet[i], i, filePath);
 		if ( ! CreateFile ( (unsigned int)blk_datastr, 		/* Physical Address */
 							nameSet[i],	/* File Name */
 							size,			/* File Size */

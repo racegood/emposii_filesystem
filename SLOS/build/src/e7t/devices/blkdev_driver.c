@@ -79,10 +79,9 @@ block_datastr *blkdev_write_block(UID id,char *data)
 	int i=0;
 
 	ret = bp = find_freeblock();	 // get free block pointer
-	printf("%x\n", ret);
 
 	size = get_datasize(data); // get size of data
-	printf("%d\n", size);
+	printf("size : %d \n", size);
 
 	while(size > 0){
 		if(bcb.blocksleft <= 0)
@@ -95,11 +94,13 @@ block_datastr *blkdev_write_block(UID id,char *data)
 		{
 			MemCpy(bp->data, data, BLOCK_SIZE);
 			bp->next = (unsigned int)(bp->next)|(unsigned int)find_freeblock();
+			printf("bp - bp->next : %x - %x [%d]\n", bp, bp->next, size);
 			bp = (unsigned int)(bp->next)&0xFFFFFFFE;
 		}
 		else
 		{
 			MemCpy(bp->data, data, size);
+			printf(" bp - bp->next : %x - %x [%d]\n", bp, bp->next, size);
 		}
 		size = size - BLOCK_SIZE;
 		bcb.blocksleft--;
@@ -111,12 +112,16 @@ block_datastr *blkdev_write_block(UID id,char *data)
 
 int free_block(block_datastr *ptr)
 {
-	if((unsigned int)(ptr->next)&0xFFFFFFFE == 0)
+	if(ptr == 0)
+	{
 		return 0;
+	}
 	else
 	{
-		free_block(ptr->next);
+		free_block((unsigned int)(ptr->next)&0xFFFFFFFE);
+		printf(" block free - %x %x\n", ptr, ptr->next);
 		ptr->next = NULL;
+		bcb.blocksleft++;
 		return 1;
 	}
 }

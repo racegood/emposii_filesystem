@@ -81,6 +81,13 @@ boolean iNode_AddShibling ( struct iNode * aNode, struct iNode * sNode )
 
 boolean iNode_Release	( struct iNode * aNode_)
 {
+	block_datastr * del = aNode_->P_addr;
+
+	printf("hi~\n");
+	blkdev_free_block(ublkdev, del);
+	printf("bye~\n");
+
+	aNode_->P_addr = NULL;
 	return iNode_Initialize(aNode_);
 }
 

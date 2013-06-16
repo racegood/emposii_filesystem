@@ -20,6 +20,7 @@
 /* User Define Library */
 #include "all.h"
 #include "FileStructure.h"
+#include "../e7t/devices/blkdev_driver.h"
 /***********************
  *    Type Define      *
  ***********************/
@@ -44,6 +45,7 @@ struct iNode{
 /***********************
  *    Static Value     *
  ***********************/
+extern UID ublkdev;
 
 /**********************
  *  Function List     *

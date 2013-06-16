@@ -233,7 +233,6 @@ block_datastr *eventIODeviceWriteBlock(device_treestr *a, UID b, void *c)
 {
 	registerstr tmpReg;
 
-	printf("eventIODeviceWriteBlock call!!\n");
 	tmpReg.r[0] = Event_IODeviceWriteBlock;
 	tmpReg.r[1] = (UINT) a;
 	tmpReg.r[2] = b;
@@ -241,7 +240,6 @@ block_datastr *eventIODeviceWriteBlock(device_treestr *a, UID b, void *c)
 
 	coreCallSWI(&tmpReg);
 	
-	printf("blockaddr : %x \n", (void*)tmpReg.r[0]);
 	return (void *)tmpReg.r[0];
 }
 

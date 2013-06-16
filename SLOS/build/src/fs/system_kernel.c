@@ -86,6 +86,7 @@ unsigned int RemoveFile ( char * name )
         return nil;
     }   
 
+	printf("111\n");
 	aNode = (struct iNode*)directoryStack[stackIndex];
 	tempNode = aNode = (struct iNode*)aNode->child;
 	for ( ; aNode;
@@ -98,6 +99,7 @@ unsigned int RemoveFile ( char * name )
 			// aNode : 현제 노드 
 			tempNode->shibling = aNode->shibling;
 
+			printf("222\n");
 			// 메모리 반환 
 			return iNode_Release(aNode);
 		}

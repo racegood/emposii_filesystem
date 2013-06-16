@@ -235,7 +235,6 @@ BYTE ioReadByte(device_treestr *d,UID id)
 block_datastr *ioWriteBlock(device_treestr *d,UID id, char *data) 
 {
 	if (d==(device_treestr *)0) {return;}
-	printf("ioWriteBlock call!!\n");
 
 	return d->write.block(id,data);
 }
