@@ -189,7 +189,7 @@ boolean cmd_fc	( char * path_, char * count_ )
 	
 	if ( count < 1 || count > 10 ) 
 	{
-		printf ( "\n Count Value Between 1 ~ 10 \n\n" ) ;
+		printf ( "\n Count Value Between 1 ~ 10 : %d\n\n", count ) ;
 		return false;
 	}
 
