@@ -259,6 +259,14 @@ boolean CreateFile ( Addr P_addr, char * fileName_, int size_, char * path_ )
 		printf ( " Not Found This Path -- [%s] \n", path_ );
 		return false;
 	}
+	
+	// File Name is Exist Check 
+	if ( !SearchNameWithCurrentiNode ( aNode, fileName_ ) ) 
+	{
+		printf ( " [%s] is Exist This Folder -> [%s] \n\n", fileName_, iNode_getName (aNode) );
+		return false;
+	}
+
 	// Get a New iNode 
 	if ( !(newNode = SearchEmptyFileManager ( )) )
 	{

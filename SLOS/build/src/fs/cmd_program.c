@@ -31,6 +31,12 @@
  ***********************/
 unsigned int	directoryStack[32];	/* Shall */
 int				stackIndex = -1;			/* Shall */
+char			nameSet[][8] = {
+		"name1", 	"name2",	"name3",	"name4",	"name5",
+		"name6",	"name7",	"name8",	"name9",	"name10",
+		NULL
+};
+
 
 /**********************
  *  Function List     *
@@ -81,6 +87,9 @@ boolean parse_cmd (   char * msg_ )
 		cur_cmd_PTR = cmd+Max_Length;
 		cmd_cd ( cmd+Max_Length );
 		return true;
+	}
+	else if ( !StrCmp ( cmd, "fc" ) ) {
+		return cmd_fc ( cmd+Max_Length, cmd+(Max_Length*2) );
 	}
 	else if ( !StrCmp ( cmd, "tree") ) {
 		return cmd_tree( cmd+Max_Length );
@@ -162,6 +171,42 @@ boolean cmd_ls (   char * msg_ )
 boolean cmd_rmdir	(   char * msg_ ) 
 {
 	RemoveDirectory(msg_);
+	return true;
+}
+
+boolean cmd_fc	( char * path_, char * count_ ) 
+{
+	int count = StrToInt ( count_ ), i=0;
+	char * filePath = "root";
+	// Make File 
+
+	// Path Check 
+	if ( !StrLen(path_) ) 
+	{
+		printf ( "\n Required Path, Path Not Commandded \n\n"  );
+		return false;
+	}
+	
+	if ( count < 1 || count > 10 ) 
+	{
+		printf ( "\n Count Value Between 1 ~ 10 \n\n" ) ;
+		return false;
+	}
+
+	printf ( " -- File Creation Start \n\n" ); 
+	for ( i = 0; i < count; i++ ) 
+	{
+		if ( ! CreateFile ( NULL, 		/* Physical Address */
+							nameSet[i],	/* File Name */
+							i,			/* File Size */
+							filePath	/* File Path */ 
+							) ) 
+		{
+			printf ( " -- [Error] File Creation is Failed -- [%s] \n\n", nameSet[i] );
+		}
+							
+	}
+
 	return true;
 }
 
