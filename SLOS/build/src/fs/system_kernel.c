@@ -241,6 +241,7 @@ struct iNode * FindFolderWithPath ( char * filePath_ )
 			}
 		}
 	}
+	return curStack;
 }
 
 boolean FindInsideDirectory ( struct iNode * aNode_ ) 
