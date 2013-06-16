@@ -55,6 +55,23 @@ void DIRCountValueSet_init ( struct DIRCountValueSet * aSet)
 	aSet->other = 0;
 }
 
+boolean seperate_cmd ( char * cmd_, char * arr_ ) 
+{	// arr_ 's Size - 4 
+	char * buf = cmd_;
+	int	cmd_count = 0;
+	while ( (*buf) != '\0' )
+	{
+		// First Empty Space Erase  
+		while ( (*buf++) != ' ' ) { ; }
+		
+		arr_[cmd_count++] = buf;
+
+		while ( (*buf++) != ' ' ) {;}
+		(*buf++) = '\0';
+	}
+	return true;
+}
+
 /*
  * --------  Function 
  * -- Name : 
@@ -64,56 +81,41 @@ void DIRCountValueSet_init ( struct DIRCountValueSet * aSet)
  */
 boolean parse_cmd (   char * msg_ ) 
 {
-	char cmd[Max_Length*4];// {'\n'};
-	char * cur_cmd_PTR = cmd;
-	char* buf = (char*)msg_;
-	int i=0,cmd_Count=1;
+	char * cmd_array[4];
 
-	// msg를 분리합시다. 
-	while ( (*buf) != '\0' ) {
+	seperate_cmd ( msg_, cmd_array );
 
-		// 공백처리
-		while ( (*buf) == ' ' ) {buf++;}
 
-		for (;i<31 && (*buf) != '\0' && (*buf) != ' '; i++,buf++) {
-			cur_cmd_PTR[i]=(*buf);
-		}
-		cur_cmd_PTR[i]='\0';
-		
-		cur_cmd_PTR = cmd + ( cmd_Count * Max_Length ) - StrLen(cmd);
-		cmd_Count++;
-	}
-	if ( !StrCmp (cmd, "cd")) {
-		cur_cmd_PTR = cmd+Max_Length;
-		cmd_cd ( cmd+Max_Length );
+	if ( !StrCmp (cmd_array[0], "cd")) {
+		cmd_cd ( cmd_array[1] );
 		return true;
 	}
-	else if ( !StrCmp ( cmd, "fc" ) ) {
-		return cmd_fc ( cmd+Max_Length, cmd+(Max_Length*2) );
+	else if ( !StrCmp ( cmd_array[0], "fc" ) ) {
+		return cmd_fc ( cmd_array[1], cmd_array[2]  );
 	}
-	else if ( !StrCmp ( cmd, "tree") ) {
-		return cmd_tree( cmd+Max_Length );
+	else if ( !StrCmp ( cmd_array[0], "tree") ) {
+		return cmd_tree( cmd_array[1] );
 	}
-	else if ( !StrCmp ( cmd, "tree") ) {
-		return cmd_tree ( cmd+Max_Length );
+	else if ( !StrCmp ( cmd_array[0], "tree") ) {
+		return cmd_tree ( cmd_array[1] );
 	}
-	else if ( !StrCmp(cmd, "ls") ) {
-		return cmd_ls ( cmd+Max_Length );
+	else if ( !StrCmp ( cmd_array[0], "ls") ) {
+		return cmd_ls ( cmd_array[1] );
 	}
-	else if ( !StrCmp (cmd, "rmdir") ) {
-		return cmd_rmdir ( cmd+Max_Length );
+	else if ( !StrCmp ( cmd_array[0], "rmdir") ) {
+		return cmd_rmdir ( cmd_array[1] );
 	}
-	else if ( !StrCmp(cmd, "exit")) {		// exit - 프로그램을 종료한다. 
+	else if ( !StrCmp( cmd_array[0], "exit")) {		// exit - 프로그램을 종료한다. 
 		return -1;
 	}
-	else if ( !StrCmp(cmd, "mkdir")) {
-		return cmd_mkdir (cmd+Max_Length);
+	else if ( !StrCmp(cmd_array[0], "mkdir")) {
+		return cmd_mkdir (cmd_array[1]);
 	}
-	else if ( !StrCmp ( cmd, "mv" )) {
-		return cmd_mv	( cmd+Max_Length, cmd+(Max_Length*2) );
+	else if ( !StrCmp ( cmd_array[0], "mv" )) {
+		return cmd_mv	( cmd_array[1], cmd_array[2] );
 	}
 	else {
-		if ( debug ) printf( " - Command not Found [%s]\n",cmd );
+		if ( debug ) printf( " - Command not Found [%s]\n",cmd_array[0] );
 		return true;
 	}
 	return true;
@@ -179,6 +181,7 @@ boolean cmd_fc	( char * path_, char * count_ )
 	int count = StrToInt ( count_ ), i=0;
 	char * filePath = "root";
 	// Make File 
+	printf ( "%s, %s\n", path_, count_ );
 
 	// Path Check 
 	if ( !StrLen(path_) ) 
