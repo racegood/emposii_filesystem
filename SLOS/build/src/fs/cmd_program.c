@@ -130,7 +130,9 @@ void PrintFiles ()
 
 	for (;curNode;curNode = (struct iNode*)curNode->shibling) {
 		if (curNode->flag != iNODE_FLAG_MASTER_BLOCK) {
-			if ( curNode->flag == iNODE_FLAG_DIRECTORY ) {
+			if ( curNode->flag == iNODE_FLAG_DIRECTORY 
+					|| curNode->flag == iNODE_FLAG_NON_DIRECTORY) {
+
 				printf ( " %s/\t", curNode->File_Struct.name );
 			}
 		}

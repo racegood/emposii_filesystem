@@ -34,7 +34,7 @@ Linker script and memory map
                 0xa00c0000                . = 0xa00c0000
                 0xa00c0000                . = ALIGN (0x4)
 
-.text           0xa00c0000     0x3dd4
+.text           0xa00c0000     0x3dd8
  *(.text)
  .text          0xa00c0000       0x44 start.o
                 0xa00c0000                _mainCRTStartup
@@ -250,103 +250,103 @@ Linker script and memory map
                 0xa00c33f0                FileStructure_SetDirectoryWithName
                 0xa00c33d0                FileStruct_Initialize
                 0xa00c3434                FileStructure_SetFile
- .text          0xa00c345c      0x780 cmd_program.o
-                0xa00c3b10                SuperBlock_PrintTree
-                0xa00c3744                cmd_mkdir
+ .text          0xa00c345c      0x784 cmd_program.o
+                0xa00c3b14                SuperBlock_PrintTree
+                0xa00c3748                cmd_mkdir
                 0xa00c346c                seperate_cmd
-                0xa00c36fc                directoryStack_Clear
-                0xa00c36ec                getDirectoryStack
+                0xa00c3700                directoryStack_Clear
+                0xa00c36f0                getDirectoryStack
                 0xa00c3664                PrintFiles
                 0xa00c34fc                parse_cmd
-                0xa00c37a8                cmd_fc
-                0xa00c3ab4                cmd_tree
-                0xa00c3a28                cmd_mv
-                0xa00c3984                cmd_cd
-                0xa00c36d0                getTopDirectoryStack
-                0xa00c3778                cmd_ls
+                0xa00c37ac                cmd_fc
+                0xa00c3ab8                cmd_tree
+                0xa00c3a2c                cmd_mv
+                0xa00c3988                cmd_cd
+                0xa00c36d4                getTopDirectoryStack
+                0xa00c377c                cmd_ls
                 0xa00c345c                DIRCountValueSet_init
-                0xa00c38b4                MoveDirectory
-                0xa00c3790                cmd_rmdir
- .text          0xa00c3bdc       0xa4 file_system.o
-                0xa00c3c68                directoryPath
-                0xa00c3bdc                file_system_start
-                0xa00c3c0c                Initialize
- .text          0xa00c3c80      0x154 iNode.o
-                0xa00c3d34                iNode_getName
-                0xa00c3d2c                iNode_SetSuperBlock
-                0xa00c3dbc                iNode_SetPhysicalAddress
-                0xa00c3c80                iNode_Initialize
-                0xa00c3d18                iNode_SetFile
-                0xa00c3d70                iNode_FindHeadNode
-                0xa00c3da4                iNode_Release
-                0xa00c3d78                iNode_AddShibling
-                0xa00c3d04                iNode_SetDirectory
-                0xa00c3cd0                iNode_SetDirectoryWithSuperBlock
+                0xa00c38b8                MoveDirectory
+                0xa00c3794                cmd_rmdir
+ .text          0xa00c3be0       0xa4 file_system.o
+                0xa00c3c6c                directoryPath
+                0xa00c3be0                file_system_start
+                0xa00c3c10                Initialize
+ .text          0xa00c3c84      0x154 iNode.o
+                0xa00c3d38                iNode_getName
+                0xa00c3d30                iNode_SetSuperBlock
+                0xa00c3dc0                iNode_SetPhysicalAddress
+                0xa00c3c84                iNode_Initialize
+                0xa00c3d1c                iNode_SetFile
+                0xa00c3d74                iNode_FindHeadNode
+                0xa00c3da8                iNode_Release
+                0xa00c3d7c                iNode_AddShibling
+                0xa00c3d08                iNode_SetDirectory
+                0xa00c3cd4                iNode_SetDirectoryWithSuperBlock
 
-.glue_7         0xa00c3dd4        0x0
+.glue_7         0xa00c3dd8        0x0
 
-.glue_7t        0xa00c3dd4        0x0
-                0xa00c3dd4                . = ALIGN (0x4)
+.glue_7t        0xa00c3dd8        0x0
+                0xa00c3dd8                . = ALIGN (0x4)
 
-.rodata         0xa00c3dd4       0x14
+.rodata         0xa00c3dd8       0x14
  *(.rodata)
- .rodata        0xa00c3dd4       0x14 cli_com.o
-                0xa00c3dd4                digits
+ .rodata        0xa00c3dd8       0x14 cli_com.o
+                0xa00c3dd8                digits
 
-.rodata.str1.4  0xa00c3de8      0x6a9
+.rodata.str1.4  0xa00c3dec      0x6a9
  .rodata.str1.4
-                0xa00c3de8       0x26 swiapi.o
+                0xa00c3dec       0x26 swiapi.o
                                  0x30 (size before relaxing)
- *fill*         0xa00c3e0e        0x2 00
+ *fill*         0xa00c3e12        0x2 00
  .rodata.str1.4
-                0xa00c3e10        0x8 cli_readline.o
+                0xa00c3e14        0x8 cli_readline.o
  .rodata.str1.4
-                0xa00c3e18        0xf cli_shell.o
+                0xa00c3e1c        0xf cli_shell.o
                                  0x10 (size before relaxing)
- *fill*         0xa00c3e27        0x1 00
+ *fill*         0xa00c3e2b        0x1 00
  .rodata.str1.4
-                0xa00c3e28       0x75 task3_start.o
+                0xa00c3e2c       0x75 task3_start.o
                                  0x78 (size before relaxing)
- *fill*         0xa00c3e9d        0x3 00
+ *fill*         0xa00c3ea1        0x3 00
  .rodata.str1.4
-                0xa00c3ea0       0x45 lib.o
+                0xa00c3ea4       0x45 lib.o
                                  0x48 (size before relaxing)
- *fill*         0xa00c3ee5        0x3 00
+ *fill*         0xa00c3ee9        0x3 00
  .rodata.str1.4
-                0xa00c3ee8      0x2f6 system_kernel.o
+                0xa00c3eec      0x2f6 system_kernel.o
                                 0x2f8 (size before relaxing)
- *fill*         0xa00c41de        0x2 00
+ *fill*         0xa00c41e2        0x2 00
  .rodata.str1.4
-                0xa00c41e0      0x1f5 cmd_program.o
+                0xa00c41e4      0x1f5 cmd_program.o
                                 0x200 (size before relaxing)
- *fill*         0xa00c43d5        0x3 00
+ *fill*         0xa00c43d9        0x3 00
  .rodata.str1.4
-                0xa00c43d8       0xb5 file_system.o
+                0xa00c43dc       0xb5 file_system.o
                                  0xb8 (size before relaxing)
- *fill*         0xa00c448d        0x3 00
+ *fill*         0xa00c4491        0x3 00
  .rodata.str1.4
-                0xa00c4490        0x1 iNode.o
+                0xa00c4494        0x1 iNode.o
                                   0xc (size before relaxing)
-                0xa00c4494                . = ALIGN (0x4)
+                0xa00c4498                . = ALIGN (0x4)
 
-.data           0xa00c4494      0x130
+.data           0xa00c4498      0x130
  *(.data)
- .data          0xa00c4494       0xc8 ddf_io.o
-                0xa00c4494                devices
- .data          0xa00c455c        0x4 mutex.o
-                0xa00c455c                semaphore
- .data          0xa00c4560        0x4 uid.o
-                0xa00c4560                new_uid
- .data          0xa00c4564        0x4 system_kernel.o
-                0xa00c4564                header
- .data          0xa00c4568       0x5c cmd_program.o
-                0xa00c456c                nameSet
-                0xa00c4568                stackIndex
-                0xa00c45c4                . = ALIGN (0x4)
+ .data          0xa00c4498       0xc8 ddf_io.o
+                0xa00c4498                devices
+ .data          0xa00c4560        0x4 mutex.o
+                0xa00c4560                semaphore
+ .data          0xa00c4564        0x4 uid.o
+                0xa00c4564                new_uid
+ .data          0xa00c4568        0x4 system_kernel.o
+                0xa00c4568                header
+ .data          0xa00c456c       0x5c cmd_program.o
+                0xa00c4570                nameSet
+                0xa00c456c                stackIndex
+                0xa00c45c8                . = ALIGN (0x4)
 
 .got
  *(.got)
-                0xa00c45c4                . = ALIGN (0x4)
+                0xa00c45c8                . = ALIGN (0x4)
 
 .bss            0xa00c45e0    0x184c0
  *(.bss)
