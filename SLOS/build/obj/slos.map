@@ -35,7 +35,7 @@ Linker script and memory map
                 0xa00c0000                . = 0xa00c0000
                 0xa00c0000                . = ALIGN (0x4)
 
-.text           0xa00c0000     0x4350
+.text           0xa00c0000     0x4420
  *(.text)
  .text          0xa00c0000       0x44 start.o
                 0xa00c0000                _mainCRTStartup
@@ -235,205 +235,205 @@ Linker script and memory map
                 0xa00c2b68                DecToLong
                 0xa00c2ce0                StrpBrk
                 0xa00c22e4                StrCpy
- .text          0xa00c2d2c      0x9c4 system_kernel.o
+ .text          0xa00c2d2c      0x9a4 system_kernel.o
                 0xa00c2d2c                FileManager_Initialize
-                0xa00c35e8                ParsePath
-                0xa00c3490                LoadDirectoryStructure
-                0xa00c3140                setHeader
-                0xa00c3260                CopyiNodeWithName
-                0xa00c3348                FindFolderWithPath
+                0xa00c35c8                ParsePath
+                0xa00c3470                LoadDirectoryStructure
+                0xa00c3120                setHeader
+                0xa00c3240                CopyiNodeWithName
+                0xa00c3328                FindFolderWithPath
                 0xa00c2f00                RemoveFile
-                0xa00c3488                FindInsideDirectory
+                0xa00c3468                FindInsideDirectory
                 0xa00c2d78                SearchEmptyFileManager
-                0xa00c3498                CreateFile
-                0xa00c3040                RemoveDirectory
-                0xa00c3178                SearchWithName
-                0xa00c3200                SearchNameWithCurrentiNode
-                0xa00c3328                SearchFileWithName
-                0xa00c32b4                RemoveiNodeWithName
+                0xa00c3478                CreateFile
+                0xa00c3020                RemoveDirectory
+                0xa00c3158                SearchWithName
+                0xa00c31e0                SearchNameWithCurrentiNode
+                0xa00c3308                SearchFileWithName
+                0xa00c3294                RemoveiNodeWithName
                 0xa00c2db4                CreateDirectory
- .text          0xa00c36f0       0x8c file_structure.o
-                0xa00c3710                FileStructure_SetDirectoryWithName
-                0xa00c36f0                FileStruct_Initialize
-                0xa00c3754                FileStructure_SetFile
- .text          0xa00c377c      0x980 cmd_program.o
-                0xa00c3b34                cmd_rm
-                0xa00c4030                SuperBlock_PrintTree
-                0xa00c3ad0                cmd_mkdir
-                0xa00c3f58                cmd_cp
-                0xa00c378c                seperate_cmd
-                0xa00c3a88                directoryStack_Clear
-                0xa00c3a78                getDirectoryStack
-                0xa00c39d4                PrintFiles
-                0xa00c3834                parse_cmd
-                0xa00c3b4c                cmd_fc
-                0xa00c3fd4                cmd_tree
-                0xa00c3ecc                cmd_mv
-                0xa00c3e28                cmd_cd
-                0xa00c3a5c                getTopDirectoryStack
-                0xa00c3b04                cmd_ls
-                0xa00c377c                DIRCountValueSet_init
-                0xa00c3d14                MoveDirectory
-                0xa00c3b1c                cmd_rmdir
- .text          0xa00c40fc       0xd8 file_system.o
-                0xa00c41bc                directoryPath
-                0xa00c40fc                file_system_start
-                0xa00c4160                Initialize
- .text          0xa00c41d4      0x154 iNode.o
-                0xa00c4288                iNode_getName
-                0xa00c4280                iNode_SetSuperBlock
-                0xa00c4310                iNode_SetPhysicalAddress
-                0xa00c41d4                iNode_Initialize
-                0xa00c426c                iNode_SetFile
-                0xa00c42c4                iNode_FindHeadNode
-                0xa00c42f8                iNode_Release
-                0xa00c42cc                iNode_AddShibling
-                0xa00c4258                iNode_SetDirectory
-                0xa00c4224                iNode_SetDirectoryWithSuperBlock
- .text          0xa00c4328       0x28 block_init.o
-                0xa00c4328                block_init
+ .text          0xa00c36d0       0x8c file_structure.o
+                0xa00c36f0                FileStructure_SetDirectoryWithName
+                0xa00c36d0                FileStruct_Initialize
+                0xa00c3734                FileStructure_SetFile
+ .text          0xa00c375c      0xa70 cmd_program.o
+                0xa00c3b14                cmd_rm
+                0xa00c4100                SuperBlock_PrintTree
+                0xa00c3ab0                cmd_mkdir
+                0xa00c3f38                cmd_cp
+                0xa00c376c                seperate_cmd
+                0xa00c3a68                directoryStack_Clear
+                0xa00c3a58                getDirectoryStack
+                0xa00c39b4                PrintFiles
+                0xa00c3814                parse_cmd
+                0xa00c3b2c                cmd_fc
+                0xa00c40a4                cmd_tree
+                0xa00c3eac                cmd_mv
+                0xa00c3e08                cmd_cd
+                0xa00c3a3c                getTopDirectoryStack
+                0xa00c3ae4                cmd_ls
+                0xa00c375c                DIRCountValueSet_init
+                0xa00c3cf4                MoveDirectory
+                0xa00c3afc                cmd_rmdir
+ .text          0xa00c41cc       0xd8 file_system.o
+                0xa00c428c                directoryPath
+                0xa00c41cc                file_system_start
+                0xa00c4230                Initialize
+ .text          0xa00c42a4      0x154 iNode.o
+                0xa00c4358                iNode_getName
+                0xa00c4350                iNode_SetSuperBlock
+                0xa00c43e0                iNode_SetPhysicalAddress
+                0xa00c42a4                iNode_Initialize
+                0xa00c433c                iNode_SetFile
+                0xa00c4394                iNode_FindHeadNode
+                0xa00c43c8                iNode_Release
+                0xa00c439c                iNode_AddShibling
+                0xa00c4328                iNode_SetDirectory
+                0xa00c42f4                iNode_SetDirectoryWithSuperBlock
+ .text          0xa00c43f8       0x28 block_init.o
+                0xa00c43f8                block_init
 
-.glue_7         0xa00c4350        0x0
+.glue_7         0xa00c4420        0x0
 
-.glue_7t        0xa00c4350        0x0
-                0xa00c4350                . = ALIGN (0x4)
+.glue_7t        0xa00c4420        0x0
+                0xa00c4420                . = ALIGN (0x4)
 
-.rodata         0xa00c4350       0x14
+.rodata         0xa00c4420       0x14
  *(.rodata)
- .rodata        0xa00c4350       0x14 cli_com.o
-                0xa00c4350                digits
+ .rodata        0xa00c4420       0x14 cli_com.o
+                0xa00c4420                digits
 
-.rodata.str1.4  0xa00c4364      0x83d
+.rodata.str1.4  0xa00c4434      0x83d
  .rodata.str1.4
-                0xa00c4364       0x5a swiapi.o
+                0xa00c4434       0x5a swiapi.o
                                  0x64 (size before relaxing)
- *fill*         0xa00c43be        0x2 00
+ *fill*         0xa00c448e        0x2 00
  .rodata.str1.4
-                0xa00c43c0       0x15 ddf_io.o
+                0xa00c4490       0x15 ddf_io.o
                                  0x18 (size before relaxing)
- *fill*         0xa00c43d5        0x3 00
+ *fill*         0xa00c44a5        0x3 00
  .rodata.str1.4
-                0xa00c43d8       0x31 blkdev_driver.o
+                0xa00c44a8       0x31 blkdev_driver.o
                                  0x34 (size before relaxing)
- *fill*         0xa00c4409        0x3 00
+ *fill*         0xa00c44d9        0x3 00
  .rodata.str1.4
-                0xa00c440c        0x8 cli_readline.o
+                0xa00c44dc        0x8 cli_readline.o
  .rodata.str1.4
-                0xa00c4414       0x19 cli_shell.o
+                0xa00c44e4       0x19 cli_shell.o
                                  0x1c (size before relaxing)
- *fill*         0xa00c442d        0x3 00
+ *fill*         0xa00c44fd        0x3 00
  .rodata.str1.4
-                0xa00c4430       0x12 task1_start.o
+                0xa00c4500       0x12 task1_start.o
                                  0x14 (size before relaxing)
- *fill*         0xa00c4442        0x2 00
+ *fill*         0xa00c4512        0x2 00
  .rodata.str1.4
-                0xa00c4444       0x75 task3_start.o
+                0xa00c4514       0x75 task3_start.o
                                  0x78 (size before relaxing)
- *fill*         0xa00c44b9        0x3 00
+ *fill*         0xa00c4589        0x3 00
  .rodata.str1.4
-                0xa00c44bc       0x45 lib.o
+                0xa00c458c       0x45 lib.o
                                  0x48 (size before relaxing)
- *fill*         0xa00c4501        0x3 00
+ *fill*         0xa00c45d1        0x3 00
  .rodata.str1.4
-                0xa00c4504      0x377 system_kernel.o
+                0xa00c45d4      0x377 system_kernel.o
                                 0x378 (size before relaxing)
- *fill*         0xa00c487b        0x1 00
+ *fill*         0xa00c494b        0x1 00
  .rodata.str1.4
-                0xa00c487c      0x269 cmd_program.o
+                0xa00c494c      0x269 cmd_program.o
                                 0x274 (size before relaxing)
- *fill*         0xa00c4ae5        0x3 00
+ *fill*         0xa00c4bb5        0x3 00
  .rodata.str1.4
-                0xa00c4ae8       0xb5 file_system.o
+                0xa00c4bb8       0xb5 file_system.o
                                  0xb8 (size before relaxing)
- *fill*         0xa00c4b9d        0x3 00
+ *fill*         0xa00c4c6d        0x3 00
  .rodata.str1.4
-                0xa00c4ba0        0x1 iNode.o
+                0xa00c4c70        0x1 iNode.o
                                   0xc (size before relaxing)
-                0xa00c4ba4                . = ALIGN (0x4)
+                0xa00c4c74                . = ALIGN (0x4)
 
-.data           0xa00c4ba4      0x130
+.data           0xa00c4c74      0x130
  *(.data)
- .data          0xa00c4ba4       0xc8 ddf_io.o
-                0xa00c4ba4                devices
- .data          0xa00c4c6c        0x4 mutex.o
-                0xa00c4c6c                semaphore
- .data          0xa00c4c70        0x4 uid.o
-                0xa00c4c70                new_uid
- .data          0xa00c4c74        0x4 system_kernel.o
-                0xa00c4c74                header
- .data          0xa00c4c78       0x5c cmd_program.o
-                0xa00c4c7c                nameSet
-                0xa00c4c78                stackIndex
-                0xa00c4cd4                . = ALIGN (0x4)
+ .data          0xa00c4c74       0xc8 ddf_io.o
+                0xa00c4c74                devices
+ .data          0xa00c4d3c        0x4 mutex.o
+                0xa00c4d3c                semaphore
+ .data          0xa00c4d40        0x4 uid.o
+                0xa00c4d40                new_uid
+ .data          0xa00c4d44        0x4 system_kernel.o
+                0xa00c4d44                header
+ .data          0xa00c4d48       0x5c cmd_program.o
+                0xa00c4d4c                nameSet
+                0xa00c4d48                stackIndex
+                0xa00c4da4                . = ALIGN (0x4)
 
 .got
  *(.got)
-                0xa00c4cd4                . = ALIGN (0x4)
+                0xa00c4da4                . = ALIGN (0x4)
 
-.bss            0xa00c4ce0   0x1184e0
+.bss            0xa00c4dc0   0x1184e0
  *(.bss)
- .bss           0xa00c4ce0   0x100010 blkdev_driver.o
- .bss           0xa01c4cf0        0x4 cli_com.o
- *fill*         0xa01c4cf4        0xc 00
- COMMON         0xa01c4d00       0x10 swiapi.o
+ .bss           0xa00c4dc0   0x100010 blkdev_driver.o
+ .bss           0xa01c4dd0        0x4 cli_com.o
+ *fill*         0xa01c4dd4        0xc 00
+ COMMON         0xa01c4de0       0x10 swiapi.o
                                   0x0 (size before relaxing)
-                0xa01c4d00                rs
- *fill*         0xa01c4d10       0x10 00
- COMMON         0xa01c4d20       0x24 button_service.o
+                0xa01c4de0                rs
+ *fill*         0xa01c4df0       0x10 00
+ COMMON         0xa01c4e00       0x24 button_service.o
                                   0x0 (size before relaxing)
-                0xa01c4d20                ledUID
-                0xa01c4d40                ledNode
- *fill*         0xa01c4d44       0x1c 00
- COMMON         0xa01c4d60        0x4 tick_service.o
+                0xa01c4e00                ledUID
+                0xa01c4e20                ledNode
+ *fill*         0xa01c4e24       0x1c 00
+ COMMON         0xa01c4e40        0x4 tick_service.o
                                   0x0 (size before relaxing)
-                0xa01c4d60                countdown
- *fill*         0xa01c4d64       0x1c 00
- COMMON         0xa01c4d80        0x8 led_driver.o
+                0xa01c4e40                countdown
+ *fill*         0xa01c4e44       0x1c 00
+ COMMON         0xa01c4e60        0x8 led_driver.o
                                   0x0 (size before relaxing)
-                0xa01c4d80                device_led
- *fill*         0xa01c4d88       0x18 00
- COMMON         0xa01c4da0        0x4 serial_driver.o
+                0xa01c4e60                device_led
+ *fill*         0xa01c4e68       0x18 00
+ COMMON         0xa01c4e80        0x4 serial_driver.o
                                   0x0 (size before relaxing)
-                0xa01c4da0                node
- *fill*         0xa01c4da4       0x1c 00
- COMMON         0xa01c4dc0        0x8 segment_driver.o
+                0xa01c4e80                node
+ *fill*         0xa01c4e84       0x1c 00
+ COMMON         0xa01c4ea0        0x8 segment_driver.o
                                   0x0 (size before relaxing)
-                0xa01c4dc0                segment
- *fill*         0xa01c4dc8       0x18 00
- COMMON         0xa01c4de0        0x4 cinit.o
+                0xa01c4ea0                segment
+ *fill*         0xa01c4ea8       0x18 00
+ COMMON         0xa01c4ec0        0x4 cinit.o
                                   0x0 (size before relaxing)
-                0xa01c4de0                STATE
- *fill*         0xa01c4de4       0x1c 00
- COMMON         0xa01c4e00      0x224 cli_com.o
+                0xa01c4ec0                STATE
+ *fill*         0xa01c4ec4       0x1c 00
+ COMMON         0xa01c4ee0      0x224 cli_com.o
                                   0x0 (size before relaxing)
-                0xa01c4e00                gpbuff
-                0xa01c4f00                report_buff
-                0xa01c4f08                command_line
-                0xa01c5020                error_buff
- *fill*         0xa01c5024       0x1c 00
- COMMON         0xa01c5040       0x24 cli_serial.o
+                0xa01c4ee0                gpbuff
+                0xa01c4fe0                report_buff
+                0xa01c4fe8                command_line
+                0xa01c5100                error_buff
+ *fill*         0xa01c5104       0x1c 00
+ COMMON         0xa01c5120       0x24 cli_serial.o
                                   0x0 (size before relaxing)
-                0xa01c5040                host
-                0xa01c5060                serial
- *fill*         0xa01c5064       0x1c 00
- COMMON         0xa01c5080       0x24 task1_start.o
+                0xa01c5120                host
+                0xa01c5140                serial
+ *fill*         0xa01c5144       0x1c 00
+ COMMON         0xa01c5160       0x24 task1_start.o
                                   0x0 (size before relaxing)
-                0xa01c5080                ublkdev_task1
-                0xa01c50a0                blkdev_task1
- *fill*         0xa01c50a4       0x1c 00
- COMMON         0xa01c50c0       0x24 task2_start.o
+                0xa01c5160                ublkdev_task1
+                0xa01c5180                blkdev_task1
+ *fill*         0xa01c5184       0x1c 00
+ COMMON         0xa01c51a0       0x24 task2_start.o
                                   0x0 (size before relaxing)
-                0xa01c50c0                seg
-                0xa01c50e0                useg
- *fill*         0xa01c50e4       0x1c 00
- COMMON         0xa01c5100    0x18040 system_kernel.o
+                0xa01c51a0                seg
+                0xa01c51c0                useg
+ *fill*         0xa01c51c4       0x1c 00
+ COMMON         0xa01c51e0    0x18040 system_kernel.o
                                   0x0 (size before relaxing)
-                0xa01c5100                blkdev
-                0xa01c5120                ublkdev
-                0xa01c5140                FileManager
- COMMON         0xa01dd140       0x80 cmd_program.o
+                0xa01c51e0                blkdev
+                0xa01c5200                ublkdev
+                0xa01c5220                FileManager
+ COMMON         0xa01dd220       0x80 cmd_program.o
                                   0x0 (size before relaxing)
-                0xa01dd140                directoryStack
+                0xa01dd220                directoryStack
 LOAD start.o
 LOAD init.o
 LOAD pcb.o
