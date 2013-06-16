@@ -213,6 +213,7 @@ struct iNode * FindFolderWithPath ( char * filePath_ )
 		return nil;
 	}
 	
+	if ( !StrNCmp ( filePath_, ".", 1 ) ) return curStack;
 	printf("filepath: %s\n", filePath_);
 	while ( (*filePath_) != '\0' ) 
 	{

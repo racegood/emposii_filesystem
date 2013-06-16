@@ -194,6 +194,7 @@ boolean cmd_fc	( char * path_, char * count_ )
 		return false;
 	}
 	
+	
 	if ( count < 1 || count > 10 ) 
 	{
 		printf ( "\n Count Value Between 1 ~ 10 : %d\n\n", count ) ;
@@ -207,7 +208,7 @@ boolean cmd_fc	( char * path_, char * count_ )
 		if ( ! CreateFile ( 0x01, 		/* Physical Address */
 							nameSet[i],	/* File Name */
 							1000*(i+1),			/* File Size */
-							filePath	/* File Path */ 
+							path_	/* File Path */ 
 							) ) 
 		{
 			printf ( " -- [Error] File Creation is Failed -- [%s] \n\n", nameSet[i] );
