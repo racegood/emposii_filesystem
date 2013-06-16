@@ -176,8 +176,10 @@ boolean MoveDirectory ( char * msg_ ) {
 		{
 			index=0;
 			MemSet ( aDir, '\0', 32 );
-			while ( (*msg_) != '/' )
+			while ( (*msg_) != '/') {
+				if ((*msg_) == '\0');break;
 				aDir[index++] = (*msg_++);
+			}
 			aDir[index] = '\0';
 			printf ( "aDir [%s] \n", aDir );	
 			msg_++;
