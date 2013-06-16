@@ -55,21 +55,21 @@ void DIRCountValueSet_init ( struct DIRCountValueSet * aSet)
 	aSet->other = 0;
 }
 
-boolean seperate_cmd ( char * cmd_, char ** arr_ ) 
+boolean seperate_cmd ( char * cmd_, unsigned int * arr_ ) 
 {	// arr_ 's Size - 4 
 	char * buf = cmd_;
 	int	cmd_count = 0;
 	printf ( "Seperate_cmd Start = [%s] \n\n", cmd_ );
-	while ( (*buf) != '\0' )
+	for ( ; (*buf) != '\0'; cmd_count++, buf++ )
 	{
 		// First Empty Space Erase  
-		while ( (*buf++) != ' ' ) { ; }
+		while ( (*buf) != ' ' ) { buf++; }
 		
-		arr_[cmd_count] = buf;
+		arr_[cmd_count] = (unsigned int )buf;
 
-		while ( (*buf++) != ' ' ) {;}
-		(*buf++) = '\0';
-		printf( " -- Sep %d, [%s]", cmd_count, arr_[cmd_count++]   ) ;
+		while ( (*buf) != ' ' ) { buf++;}
+		(*buf) = '\0';
+		printf( " -- Sep %d, [%s]", cmd_count, arr_[cmd_count]   ) ;
 	}
 	return true;
 }
@@ -83,11 +83,17 @@ boolean seperate_cmd ( char * cmd_, char ** arr_ )
  */
 boolean parse_cmd (   char * msg_ ) 
 {
-	char * cmd_array[4];
+	unsigned int cmd_array[4];
+	char buf [ Max_Length *4 ];
 
-	seperate_cmd ( msg_, cmd_array );
+	// Initialize To Buffer 
+	MemSet ( buf, '\0', Max_Length * 4 ) ;
+	StrCpy ( buf, msg_ ); 
 
+	// Seperate Command 
+	seperate_cmd ( buf, cmd_array );
 
+	// Parse Command 
 	if ( !StrCmp (cmd_array[0], "cd")) {
 		cmd_cd ( cmd_array[1] );
 		return true;
