@@ -57,6 +57,7 @@ boolean SearchFileWithName ( char *, char* );
 struct iNode * FindFolderWithPath ( char * );
 struct iNode * ParsePath ( char*, struct iNode * );
 struct iNode * RemoveiNodeWithName ( struct iNode *, char * );
+struct iNode * ReadFile ( char * ) ;
 struct iNode * CopyiNodeWithName ( struct iNode *, char *);
 boolean	MoveFile ( char * fileName, char * sPath, char* dPath );
 #endif

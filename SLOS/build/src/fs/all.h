@@ -29,7 +29,7 @@
 /***********************
  *    Type Define      *
  ***********************/
-#define debug				1
+#define debug				0
 #define true				1
 #define false				0
 #define nil					0x0

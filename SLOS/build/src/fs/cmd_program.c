@@ -59,7 +59,7 @@ void DIRCountValueSet_init ( struct DIRCountValueSet * aSet)
 boolean seperate_cmd ( char * cmd_, char ** arr_ ) 
 {	// arr_ 's Size - 4 
 	int	cmd_count = 0;
-	printf ( "Seperate_cmd Start = [%s] \n\n", cmd_ );
+	if( debug) printf ( "Seperate_cmd Start = [%s] \n\n", cmd_ );
 	while ( (*cmd_) != '\0' )
 	{
 		while((*cmd_) == ' ') cmd_++;
@@ -104,6 +104,12 @@ boolean parse_cmd (   char * msg_ )
 	}
 	else if ( !StrCmp ( cmd_array[0], "ls") ) {
 		return cmd_ls ( cmd_array[1] );
+	}
+	else if ( !StrCmp ( cmd_array[0], "ll") ) {
+		return cmd_ll ( cmd_array[1] );
+	}
+	else if ( !StrCmp ( cmd_array[0], "cat" )) {
+		return cmd_cat ( cmd_array[1] );
 	}
 	else if ( !StrCmp ( cmd_array[0], "rmdir") ) {
 		return cmd_rmdir ( cmd_array[1] );
@@ -180,6 +186,38 @@ boolean cmd_ls (   char * msg_ )
 	return true;
 }
 
+boolean cmd_cat ( char * msg_ )
+{
+	struct iNode * curNode = ReadFile ( msg_ );
+
+	if ( !curNode ) return false;
+	return true;
+}
+
+boolean cmd_ll ( char * msg_ ) 
+{
+	struct iNode * curNode = (struct iNode*)directoryStack[stackIndex];
+	curNode = (struct iNode*)curNode->child;/* 현재 폴더의 SuperBlock을 가리키게 합니다. */
+
+	for (;curNode;curNode = (struct iNode*)curNode->shibling) {
+		if (curNode->flag != iNODE_FLAG_MASTER_BLOCK) {
+			if ( curNode->flag == iNODE_FLAG_DIRECTORY ) 
+				printf ( "-------- [DIR..]\t	-- %d\t --  %s\n", 
+						curNode->File_Struct.fs_size,
+						curNode->File_Struct.name
+						);
+			else if ( curNode->flag == iNODE_FLAG_NON_DIRECTORY )
+				printf ( "-------- [FILE.]\t	-- %d\t --  %s\n", 
+						curNode->File_Struct.fs_size,
+						curNode->File_Struct.name
+						);			
+		}
+	}
+	printf ( "\n" );
+
+	return true;
+}
+
 boolean cmd_rmdir	(   char * msg_ ) 
 {
 	RemoveDirectory(msg_);
@@ -203,7 +241,7 @@ boolean cmd_fc	( char * path_, char * count_ )
 	block_datastr *blk_datastr;
 
 	// Make File 
-	printf ( "%s, %s\n", path_, count_ );
+	if( debug ) printf ( "%s, %s\n", path_, count_ );
 
 	// Path Check 
 	if ( !StrLen(path_) ) 
@@ -219,7 +257,7 @@ boolean cmd_fc	( char * path_, char * count_ )
 		return false;
 	}
 
-	printf ( " -- File Creation Start \n\n" ); 
+	if ( debug ) printf ( " -- File Creation Start \n\n" ); 
 
 	// make data '0'(48)~'z'(122)
 	for( i = 0; i < 4000; i++ )
@@ -260,7 +298,7 @@ boolean MoveDirectory ( char * msg_ ) {
 	struct iNode * curNode=nil,*aNode = (struct iNode*)getTopDirectoryStack ();
 	int index =0;
 	char aDir[32];
-	printf ( "Move Directory [%s]\n", msg_);
+	if( debug ) printf ( "Move Directory [%s]\n", msg_);
 	if ( StrLen ( msg_ ) > 1 ) {
 		// Set directoryStack With Recursive
 		while ( StrLen(msg_) > 0 ) 
@@ -274,7 +312,7 @@ boolean MoveDirectory ( char * msg_ ) {
 				aDir[index++] = (*msg_++);
 			}
 			aDir[index] = '\0';
-			printf ( "aDir [%s] \n", aDir );	
+			if ( debug ) printf ( "aDir [%s] \n", aDir );	
 
 			curNode = SearchNameWithCurrentiNode ( aNode, aDir );
 			if ( curNode && curNode->flag == iNODE_FLAG_DIRECTORY ) 
@@ -376,7 +414,7 @@ boolean cmd_cp ( char* name, char * destPath )
 
 	// block operation
 	blk_datastr = eventIODeviceWriteBlock(blkdev, ublkdev, data);
-	printf("size : %d, blk_datastr : %x\n", size, blk_datastr);
+	if ( debug ) printf("size : %d, blk_datastr : %x\n", size, blk_datastr);
 	if ( ! CreateFile ( (unsigned int)blk_datastr, 		/* Physical Address */
 				(aNode->File_Struct).name,	/* File Name */
 				size,			/* File Size */

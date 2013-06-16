@@ -30,7 +30,7 @@ unsigned int CreateDirectory ( char * name_ )
 {
 	struct iNode * newNode = nil, *sbNode = nil;
 
-	printf("CreateDirectory call !\n");
+	if (debug) printf("CreateDirectory call !\n");
 	if (!StrLen(name_)) {
 		printf(" ** [Error] argument error \n");
 		return nil;
@@ -44,13 +44,13 @@ unsigned int CreateDirectory ( char * name_ )
 	if ( (newNode = SearchEmptyFileManager()) == nil ) return nil;
 
 	
-	printf ( " Set Directory iNode \n" );
+	if ( debug ) printf ( " Set Directory iNode \n" );
 	if ( !iNode_SetDirectory(newNode) ) return nil;
 
-	printf ( "SetDirectoryWithName\n" );
+	if ( debug ) printf ( "SetDirectoryWithName\n" );
 	if ( !FileStructure_SetDirectoryWithName( &(newNode->File_Struct), name_) ) return nil;
 
-	printf ( "Set Directory Stack \n" );
+	if ( debug ) printf ( "Set Directory Stack \n" );
 	if ( !header ) {	// Root 디렉터리 설정
 		header = (unsigned int)newNode;
 		stackIndex = 0;
@@ -86,7 +86,7 @@ unsigned int RemoveFile ( char * name )
         return nil;
     }   
 
-	printf("111\n");
+	if ( debug ) printf("111\n");
 	aNode = (struct iNode*)directoryStack[stackIndex];
 	tempNode = aNode = (struct iNode*)aNode->child;
 	for ( ; aNode;
@@ -99,7 +99,7 @@ unsigned int RemoveFile ( char * name )
 			// aNode : 현제 노드 
 			tempNode->shibling = aNode->shibling;
 
-			printf("222\n");
+			if ( debug ) printf("222\n");
 			// 메모리 반환 
 			return iNode_Release(aNode);
 		}
@@ -175,7 +175,7 @@ struct iNode * SearchWithName ( char *name )
 	curNode = (struct iNode*)directoryStack[stackIndex];
 	curNode = (struct iNode*)curNode->child;
 
-	printf("SearchWithName call!!, curNode : %x\n", curNode);
+	if ( debug ) printf("SearchWithName call!!, curNode : %x\n", curNode);
 
 	for ( ; curNode; curNode = (struct iNode *)curNode->shibling ){
 		if ( curNode->flag != iNODE_FLAG_NOT_USED 
@@ -186,15 +186,33 @@ struct iNode * SearchWithName ( char *name )
 		}
 	}
 
-	printf("return nil\n");
+	if ( debug ) printf("return nil\n");
 	return nil;
+}
+
+struct iNode * ReadFile ( char * name ) 
+{
+	struct iNode * curNode = nil;
+
+	if ( !StrLen(name) )
+	{
+		printf ( " - [Error] Required File Name\n\n" );
+		return nil;
+	}
+	if ( !(curNode=SearchWithName(name)) )
+	{
+		printf ( " File is Not Exist [%s] \n\n", name ) ;
+		return nil;
+	}
+
+	return curNode;
 }
 
 struct iNode * SearchNameWithCurrentiNode ( struct iNode * aNode, char *name )
 {
 	struct iNode * curNode = nil;
 	curNode = (struct iNode *)aNode->child;
-	printf ( "Search Name With CurrentiNode \n\n;" ) ;
+	if ( debug ) printf ( "Search Name With CurrentiNode \n\n;" ) ;
 	for ( ; curNode; curNode = (struct iNode *)curNode->shibling ) 
 	{
 		if ( curNode->flag != iNODE_FLAG_NOT_USED
@@ -275,7 +293,7 @@ struct iNode * FindFolderWithPath ( char * filePath_ )
 	int  curStackIndex =0;
 	struct iNode * curStack=getTopDirectoryStack();
 
-	printf ( "  Initialize To Buffer \n" );
+	if ( debug ) printf ( "  Initialize To Buffer \n" );
 	MemSet ( curFolder, '\0', 32 );
 
 	if ( !StrLen ( filePath_ ) ) 
@@ -285,7 +303,7 @@ struct iNode * FindFolderWithPath ( char * filePath_ )
 	}
 	
 	if ( !StrNCmp ( filePath_, ".", 1 ) ) return curStack;
-	printf("filepath: %s\n", filePath_);
+	if ( debug ) printf("filepath: %s\n", filePath_);
 	while ( (*filePath_) != '\0' ) 
 	{
 		// Seperate Path
@@ -298,7 +316,7 @@ struct iNode * FindFolderWithPath ( char * filePath_ )
 		if ( !index ) curStack = &(FileManager[0]);
 		else 
 		{
-			printf ( " FindFolderWithPath - index is safe \n" ) ;
+			if ( debug ) printf ( " FindFolderWithPath - index is safe \n" ) ;
 			curStack = SearchNameWithCurrentiNode ( curStack, curFolder );	
 			if ( !curStack ) return nil;
 			switch ( curStack->flag ) 
@@ -333,7 +351,7 @@ boolean CreateFile ( Addr P_addr, char * fileName_, int size_, char * path_ )
 	struct iNode * newNode=nil;
 	
 	// Pointer Check
-	printf("pointer check\n");
+	if ( debug ) printf("pointer check\n");
 	aNode = FindFolderWithPath ( path_ );
 	if ( !aNode ) 
 	{
@@ -341,30 +359,30 @@ boolean CreateFile ( Addr P_addr, char * fileName_, int size_, char * path_ )
 		return false;
 	}
 	
-	printf(" File Name is Exist Check \n");
+	if ( debug ) printf(" File Name is Exist Check \n");
 	if ( SearchNameWithCurrentiNode ( aNode, fileName_ ) ) 
 	{
 		printf ( " [%s] is Exist This Folder -> [%s] \n\n", fileName_, iNode_getName (aNode) );
 		return false;
 	}
 
-	printf(" Get a New iNode  \n");
+	if ( debug ) printf(" Get a New iNode  \n");
 	if ( !(newNode = SearchEmptyFileManager ( )) )
 	{
 		printf ( " FileManager is Full ! \n" );
 		return false;
 	}
-	printf(" Set iNode by File  \n");
+	if ( debug ) printf(" Set iNode by File  \n");
 	if ( !iNode_SetFile ( newNode ) ) return false;
 	
-	printf(" Set File Structure \n");
+	if ( debug ) printf(" Set File Structure \n");
 	if ( !FileStructure_SetFile ( &(newNode->File_Struct), fileName_, size_ ) )
 		return false;
 
-	printf(" Set Physical Address to iNode \n");
+	if ( debug ) printf(" Set Physical Address to iNode \n");
 	if ( !iNode_SetPhysicalAddress ( newNode, P_addr ) ) return false;
 
-	printf(" Add Shibling\n");
+	if ( debug ) printf(" Add Shibling\n");
 	if ( !iNode_AddShibling ( aNode, newNode ) ) return false;	
 		
 	return true;
@@ -374,7 +392,7 @@ struct iNode * ParsePath ( char * path_, struct iNode * curDir_ )
 {
 	char curPath[32];
 	int index=0;
-	printf ( " - ParsePath \n" );
+	if ( debug ) printf ( " - ParsePath \n" );
 	MemSet ( curPath, '\0', 32 );
 
 	if ( path_[0] == '/' ) return ParsePath ( path_++, (struct iNode *)directoryStack[0] );
@@ -384,7 +402,7 @@ struct iNode * ParsePath ( char * path_, struct iNode * curDir_ )
 		curPath[index++] = (*path_++);
 	}
 	curPath[index] = '\0';	
-	printf ( " -- ParsePath : curPath [%s] \n", curPath );
+	if ( debug ) printf ( " -- ParsePath : curPath [%s] \n", curPath );
 	path_++;
 
 	if ( index == 0 ) return curDir_;
